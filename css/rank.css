@@ -1,0 +1,36 @@
+/* 參考網站https://codepen.io/hakura/pen/ebglw */
+
+#rank table {
+    border-collapse: collapse;
+    width: 100%;
+    background: black;
+    color: #fff;
+    font-weight: bolder;
+    font-size: 20px;
+   
+}
+
+#rank th {
+    background-color: black;
+    font-weight: bold;
+    color: #fff;
+    white-space: nowrap;
+}
+
+#rank td, th {
+    padding: 1em 1.5em;
+    text-align: center;
+}
+
+
+#rank tbody tr:nth-child(1) {
+    background-color:  #F2EE2E;
+    transition: all .125s ease-in-out;
+    font-size: 22px;
+    color: blue;
+}
+
+#rank tbody tr:hover {
+    background-color: #DDDDDD;
+    color:#0074D9;
+}

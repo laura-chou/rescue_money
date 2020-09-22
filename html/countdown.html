@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 參考網站 https://codepen.io/glaubersampaio/pen/vOZbPx -->
+<!-- TweenMax中文使用方法 https://www.tweenmax.com.cn/ -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/TweenMax.min.js"></script>
+    <link rel="stylesheet" href="../css/Arimo.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "Arimo", sans-serif;
+        }
+
+        /*=================
+        * TIMER
+        *=================*/
+        .timer {
+            width: 100px;
+            height: 60px;
+            display: block;
+            color: black;
+            position: relative;
+        }
+
+        .timer--clock {
+            width: 50px;
+            height: 40px;
+            text-align: center;
+            position: absolute;
+            overflow: hidden;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .timer--clock .clock-display-grp {
+            width: 100%;
+            position: relative;
+        }
+
+        .timer--clock .clock-display-grp .number-grp {
+            width: auto;
+            display: block;
+            height: 100px;
+            float: left;
+            overflow: hidden;
+        }
+
+        .timer--clock .clock-display-grp .number-grp .number-grp-wrp {
+            width: 100%;
+            position: relative;
+        }
+
+        .timer--clock .clock-display-grp .number-grp .number-grp-wrp .num {
+            width: auto;
+            position: relative;
+        }
+
+        .timer--clock .clock-display-grp .number-grp .number-grp-wrp .num p {
+            width: auto;
+            display: table;
+            font-size: 40px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="timer">
+        <div class="timer--clock">
+            <div class="seconds-group clock-display-grp">
+                <div class="first number-grp">
+                    <div class="number-grp-wrp">
+                        <div class="num num-0">
+                            <p>0</p>
+                        </div>
+                        <div class="num num-1">
+                            <p>1</p>
+                        </div>
+                        <div class="num num-2">
+                            <p>2</p>
+                        </div>
+                        <div class="num num-3">
+                            <p>3</p>
+                        </div>
+                        <div class="num num-4">
+                            <p>4</p>
+                        </div>
+                        <div class="num num-5">
+                            <p>5</p>
+                        </div>
+                        <div class="num num-6">
+                            <p>6</p>
+                        </div>
+                        <div class="num num-7">
+                            <p>7</p>
+                        </div>
+                        <div class="num num-8">
+                            <p>8</p>
+                        </div>
+                        <div class="num num-9">
+                            <p>9</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="second number-grp">
+                    <div class="number-grp-wrp">
+                        <div class="num num-0">
+                            <p>0</p>
+                        </div>
+                        <div class="num num-1">
+                            <p>1</p>
+                        </div>
+                        <div class="num num-2">
+                            <p>2</p>
+                        </div>
+                        <div class="num num-3">
+                            <p>3</p>
+                        </div>
+                        <div class="num num-4">
+                            <p>4</p>
+                        </div>
+                        <div class="num num-5">
+                            <p>5</p>
+                        </div>
+                        <div class="num num-6">
+                            <p>6</p>
+                        </div>
+                        <div class="num num-7">
+                            <p>7</p>
+                        </div>
+                        <div class="num num-8">
+                            <p>8</p>
+                        </div>
+                        <div class="num num-9">
+                            <p>9</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // TweenLite預設移動方式 = (Expo(突然減速) easeOut(進出場))
+        TweenLite.defaultEase = Expo.easeOut;
+
+        const timerEl = document.querySelector('.timer');
+        const secondsGroupEl = timerEl.querySelector('.seconds-group');
+        // 暫停鍵變數
+      
+       
+        let t = 0
+        window.onmessage = function (e) {
+                t = e.data
+                initTimer(t)
+        };
+        function initTimer(time) {
+            // 顯示數字    
+            TweenMax.to(timerEl, 1, { opacity: 1 });
+            const secondsGroup = {
+                firstNum: secondsGroupEl.querySelector('.first'),
+                secondNum: secondsGroupEl.querySelector('.second')
+            };
+         
+            setTimeout(updateTimer, 1000);
+
+            function updateTimer() {
+                let timeNumbers;
+                // 將參數t放進現在的時間秒數
+                var date = new Date();
+                date.setSeconds(time);
+
+
+                // valueOf()傳回Date物件的原始值
+                var newDate = new Date(date.valueOf() - 1000);
+                // 將時間轉陣列
+                var temp = newDate.toTimeString().split(" ");
+                var tempsplit = temp[0].split(':');
+                time = tempsplit[2];
+                timeNumbers = time.split('');
+                updateTimerDisplay(timeNumbers);
+            
+                // 如果時間小於10
+                if (time <= 10) {
+                    timerEl.style.color = 'red';
+                }
+                // 如果時間不等於0
+                if (time != 0) {
+                    setTimeout(updateTimer, 1000);
+                } else {
+                    countdownFinished();
+                }
+            }
+            // 更新時間顯示
+            function updateTimerDisplay(arr) {
+                animateNum(secondsGroup.firstNum, arr[0]);
+                animateNum(secondsGroup.secondNum, arr[1]);
+            }
+            // 數字動畫
+            function animateNum(group, arrayValue) {
+                //移除指定對象的所有動畫
+                TweenMax.killTweensOf(group.querySelector('.number-grp-wrp'));
+                // TweenMax.to( target:Object, duration:Number, vars:Object )
+                // TweenMax.to( 目標對象, 持續時間, 參數(css屬性、延遲、重複次數等) )
+                TweenMax.to(group.querySelector('.number-grp-wrp'), 1, {
+                    y: - group.querySelector('.num-' + arrayValue).offsetTop
+                });
+
+            }
+
+
+
+        }
+
+        function countdownFinished() {
+            // 淡化數字    
+            TweenMax.to(timerEl, 1, { opacity: 0.2 });
+            timerEl.style.color = 'black';
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>

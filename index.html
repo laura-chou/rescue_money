@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搶救荷包大作戰</title>
+    <script src="js/jquery-3.5.0.min.js"></script>
+    <script src="js/sweetalert2.all.min.js"></script>
+    <script src="js/accounting.min.js"></script>
+    <link rel="stylesheet" href="css/rank.css">
+    <link rel="stylesheet" href="css/money.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+            background: black;
+            /* 禁止反白 */
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+
+        }
+
+        #game {
+            width: 100%;
+            height: 100%;
+            cursor: url('images/catch.png')45 45, auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #game:active {
+            cursor: url('images/grab.png')45 45, auto;
+        }
+
+        #game img {
+            position: absolute;
+            width: 150px;
+        }
+
+        #main {
+            height: 100vh;
+            width: 100wh;
+            position: relative;
+        }
+
+        #top {
+            width: 100%;
+            height: 10%;
+            background: url('images/sky.jpg');
+        }
+
+        #top table tr td {
+            background-image: url('images/cloud.png');
+            background-repeat: no-repeat;
+            background-size: 45% 90%;
+            background-position: center center;
+        }
+
+        #top .lotto {
+            cursor: url('images/catch.png')45 45, auto;
+        }
+
+        #top .lotto:active {
+            cursor: url('images/grab.png')45 45, auto;
+        }
+
+        #store {
+            width: 100%;
+            height: 35%;
+            background-image: url('images/backgroud.png');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+
+        }
+        .title{
+            width: 100%;
+            height: 45%;
+            background: rgb(0, 0, 0);
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .info {
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            display: flex;
+            padding: 1%;
+        }
+        .info img {
+            animation: shake 3s infinite;
+            cursor:pointer;
+        }
+        @keyframes shake {
+            0%{transform: rotate(10deg);}
+            50%{transform: rotate(-10deg);}
+            100%{transform: rotate(10deg);}
+        }
+        #road {
+            width: 100%;
+            height: 55%;
+            background-image: url('images/road.png');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            z-index: 100;
+            position: relative;
+        }
+
+        #text-score,
+        #lottery {
+            display: inline-block;
+            font-weight: bolder;
+        }
+
+        #startbtn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #btn-start,
+        #btn-title {
+            font-size: 50px;
+            font-weight: bolder;
+            color: yellow;
+            text-align: center;
+            border: none;
+            padding: 20px;
+            display: inline-block;
+            background: black;
+            outline: none;
+            cursor: url('images/catch.png')45 45, auto;
+        }
+
+        #btn-start:active,
+        #btn-title:active {
+            cursor: url('images/grab.png')45 45, auto;
+        }
+
+        #btn-start:hoverz {
+            transform: scale(1.2);
+        }
+
+        .rank_title {
+            font-size: 50px;
+            font-weight: bolder;
+            color: white;
+            background: black;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body onselectstart="return false">
+    <div id="main">
+        <div id="money_rain">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <div class="title">
+            <img src="images/title.png">
+        </div>
+        <div class="info">
+            <img src="images/info.png" width="100%" title="遊戲說明">
+        </div>
+        <div id="top">
+            <table border="0" width="100%" height="100%">
+                <tr align="center">
+                    <td width="33%" style="font-size: 30px;">
+                        <img src="images/wallet.png" width="40px" height="40px">
+                        <div id="text-score">$0</div>
+                    </td>
+                    <td width="34%"><iframe id="iframe" src="html/countdown.html" width="100px" height="60px"
+                            frameborder="0"></iframe></td>
+                    <td width="33%" id="td">
+                        <img src="images/lottery.png" width="40px" height="40px">
+                        <div id="lottery" style="font-size:30px;">x0</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="store"></div>
+
+        <div id="road">
+            <div id="game"></div>
+            <div id='startbtn'><input id="btn-start" type="button" value="開始"></input></div>
+        </div>
+        <div id="rank">
+            <p class="rank_title">全球富豪榜</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="33%">排名</th>
+                        <th width="33%">姓名</th>
+                        <th width="34%">身價</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <script>
+        // 分數
+        let score = 0;
+        // 剩餘時間
+        let timeleft = 31;
+        // 遊戲計時器
+        let gametimer = 0;
+        // 流水號
+        let moneyid = 0;
+        // 玩家信息
+        let player_info = []
+        const img = ['one', 'five', 'ten']
+        const bonus = ['十萬', '一百萬', '一千萬', '一億']
+        const bones_number = [100000, 1000000, 10000000, 100000000]
+        const rand = (num) => {
+            return Math.round(Math.random() * num)
+        }
+        // 掉彩券時間
+        let fall_time = rand(timeleft - 1) + 1
+        if (fall_time == 31 || fall_time <= 5) {
+            fall_time = 25;
+        }
+
+        // 判斷Web Storage有沒有值
+        let get_storage = JSON.parse(localStorage.getItem('information'));
+        if (get_storage != null) {
+            $("#rank").show()
+            if (get_storage.length > 1) {
+                // 排序
+                get_storage = get_storage.sort(function (a, b) {
+                    return parseInt(b.money.replace(/[,.*+?^${}()|[\]\\]/g, "")) - parseInt(a.money.replace(/[,.*+?^${}()|[\]\\]/g, ""));
+                });
+            }
+            for (let i = 0; i < get_storage.length; i++) {
+                $('#rank table tbody').append(
+                    `<tr align=center>
+                <td>${i + 1}</td>
+                <td>${get_storage[i].name}</td>
+                <td>$${get_storage[i].money}</td>
+                </tr`)
+                player_info.push({ name: get_storage[i].name, money: get_storage[i].money })
+            }
+
+        } else {
+            $("#rank").hide()
+        }
+        $("#money_rain").hide()
+        // 遞迴
+        const move = (moneyid) => {
+            $(`#money${moneyid}`).animate({
+                top: "-50%",
+                bottom: "-90%"
+            }, 1500, function () {
+                move(moneyid);
+            })
+        }
+        // 背景音樂
+        const bgm = new Audio();
+        bgm.src = "music/bgm.mp3";
+        // 點擊說明
+        $('.info img').click(function () {
+            Swal.fire({
+                // icon
+                imageUrl: 'images/info.png',
+                imageWidth: 50,
+                imageHeight: 50,
+                allowOutsideClick: false,
+                // 標題
+                title: '遊戲說明',
+                // 文字或HTML二選一
+                html: '<ol style="padding:2%"><li style="text-align:left;">滑鼠雙擊抓取馬路中移動的鈔票</li><li style="text-align:left;">彩券會不定時從天空降下，請隨時留意並雙擊滑鼠抓取</li></ol>',
+                // 按鈕文字
+                confirmButtonText: '確定'
+            })
+        })
+        // 點擊開始
+        $('#btn-start').click(function () {
+            bgm.play();
+            timeleft = 31;
+            $('#lottery').text('x0');
+            // 傳值到countdown頁面的函式
+            document.getElementById('iframe').contentWindow.postMessage(timeleft, '*')
+            $('#store').css('background-image', "url('images/backgroud_open.png')")
+            // 淡出開始鍵
+            $('#startbtn').fadeOut("slow")
+            $('.title').fadeOut("slow")
+            $('.info').fadeOut("slow")
+            // 重設
+            score = 0;
+            $('#text-score').text(`$${score}`);
+
+
+            // 遊戲倒數
+            gametimer = setInterval(() => {
+                // 倒數
+                timeleft--;
+
+                // 時間到
+                if (timeleft == 0) {
+                    bgm.pause();
+                    bgm.currentTime = 0;
+                    setTimeout(() => {
+                        // 停止計時器
+                        clearInterval(gametimer);
+
+                        // 清場
+                        $('#game img').remove();
+                        $('#store').css('background-image', "url('images/backgroud.png')")
+                        let b = rand(bonus.length - 1)
+
+                        // 去掉特殊符號轉成數字
+                        let my_money = parseInt($('#text-score').text().replace(/[,.*+?^${}()|[\]\\]/g, ""))
+                        if ($('#lottery').text() != "x0") {
+                            Swal.fire({
+                                // icon
+                                imageUrl: 'images/lottery.png',
+                                imageWidth: 100,
+                                imageHeight: 100,
+                                allowOutsideClick: false,
+                                // 標題
+                                title: '一合彩',
+                                // 文字或HTML二選一
+                                html: `<div>獎金上看<b style="color:red">${bonus[b]}</b><br>要花1000元購買嗎?</div>`,
+                                // 是否有取消按鈕
+                                showCancelButton: true,
+                                // 按鈕文字
+                                confirmButtonText: '買',
+                                cancelButtonText: '不買',
+
+                            }).then(result => {
+                                // 如果確定
+                                if (result.value) {
+                                    if (my_money > 1000) {
+                                        my_money -= 1000;
+                                        (async () => {
+                                            const inputOptions = new Promise((resolve) => {
+                                                setTimeout(() => {
+                                                    resolve({
+                                                        '1': '1',
+                                                        '2': '2',
+                                                        '3': '3',
+                                                        '4': '4',
+                                                        '5': '5',
+                                                    })
+                                                }, 1000)
+                                            })
+
+                                            const { value: number } = await Swal.fire({
+                                                title: '選一個號碼',
+                                                input: 'radio',
+                                                allowOutsideClick: false,
+                                                inputOptions: inputOptions,
+                                                inputValidator: (value) => {
+                                                    if (!value) {
+                                                        return '你還沒選號碼!'
+                                                    }
+                                                }
+                                            })
+                                            let win_number = rand(4) + 1
+
+                                            if (number) {
+                                                const bonus = new Audio();
+                                                bonus.src = "music/bonus.mp3";
+                                                bonus.play();
+                                                Swal.fire({
+                                                    imageUrl: 'images/bonus.png',
+                                                    imageWidth: 100,
+                                                    imageHeight: 100,
+                                                    allowOutsideClick: false,
+                                                    confirmButtonText: '確定',
+                                                    title: '開獎號碼',
+                                                    html: `<h1 style="font-size:300%; color:red">${win_number}</h1>`
+                                                }).then(result => {
+                                                    if (number == win_number) {
+                                                        const win = new Audio();
+                                                        win.src = "music/applause.mp3";
+                                                        win.play();
+                                                        // 下鈔票
+                                                        $("#money_rain").show()
+                                                        Swal.fire({
+                                                            imageUrl: 'images/win.png',
+                                                            imageWidth: 100,
+                                                            imageHeight: 100,
+                                                            allowOutsideClick: false,
+                                                            confirmButtonText: '確定',
+                                                            title: '恭喜中獎',
+                                                        }).then(result => {
+                                                            total(my_money + bones_number[b])
+                                                        })
+                                                    } else {
+                                                        const lose = new Audio();
+                                                        lose.src = "music/disappoint.mp3";
+                                                        lose.play();
+                                                        Swal.fire({
+                                                            imageUrl: 'images/lose.png',
+                                                            imageWidth: 100,
+                                                            imageHeight: 100,
+                                                            allowOutsideClick: false,
+                                                            confirmButtonText: '確定',
+                                                            title: '銘謝惠顧',
+                                                        }).then(result => {
+                                                            total(my_money)
+                                                        })
+                                                    }
+                                                })
+                                            }
+                                        })()
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: '你的錢不夠',
+                                            allowOutsideClick: false,
+                                            confirmButtonText: '確定',
+                                        }).then(result => {
+                                            if (my_money != 0) {
+                                                total(my_money)
+                                            } else {
+                                                $('#startbtn').fadeIn("slow")
+                                                $('.title').fadeIn("slow")
+                                                $('.info').fadeIn("slow")
+                                            }
+                                        })
+
+                                    }
+
+                                }
+                                // 如果取消
+                                else if (result.dismiss) {
+                                    if (my_money != 0) {
+                                        total(my_money)
+                                    } else {
+                                        $('#startbtn').fadeIn("slow")
+                                        $('.title').fadeIn("slow")
+                                        $('.info').fadeIn("slow")
+                                    }
+
+                                }
+
+                            })
+
+                        } else {
+                            if (my_money != 0) {
+                                total(my_money)
+                            } else {
+                                $('#startbtn').fadeIn("slow")
+                                $('.title').fadeIn("slow")
+                                $('.info').fadeIn("slow")
+                            }
+
+                        }
+
+                    }, 1000)
+
+                } else {
+                    // 隨機
+                    const num = rand(5)
+                    // 如果抽到數字大於 4 ，生一張鈔票
+                    if (num > 1) {
+                        let i = rand(5);
+                        if (i > 2) {
+                            i = 0
+                        }
+                        $('#game').append(`<img src="images/${img[i]}.gif" id="money${moneyid}" name="${img[i]}">`);
+                        $(`#money${moneyid}`).css({
+                            top: rand(70) + "%",
+                            left: rand(70) + "%"
+                        })
+                        move(moneyid);
+                        moneyid++;
+                    }
+
+                    // 掉彩券
+                    if (timeleft == fall_time) {
+                        $('#top').append('<img class="lotto" src="images/lottery.png" width="50px" height="50px">');
+                        let j = rand(90);
+                        $('.lotto').css('transform', 'rotate(35deg)')
+                        $('.lotto').css('margin-left', `${j}%`)
+                        $('.lotto').animate({ marginTop: '50%' }, 5000)
+
+                        setTimeout(() => {
+                            $('.lotto').attr("src", "images/lottery.png").remove()
+                        }, 5000)
+                    }
+                }
+            }, 1000)
+
+        })
+        // 按下鈔票
+        $("#game").on("click", "img", function () {
+            const click = new Audio();
+            click.src = "music/pay_money.mp3";
+            click.play();
+            $(this).css('margin-top', '2%')
+            if (this.name == "one") {
+                $(this).attr("src", "images/number1.png");
+                score += 100;
+                setTimeout(() => {
+                    $(this).attr("src", "images/number1.png").remove()
+                }, 500)
+            } else if (this.name == "five") {
+                $(this).attr("src", "images/number5.png");
+                score += 500;
+                setTimeout(() => {
+                    $(this).attr("src", "images/number5.png").remove()
+                }, 500)
+            } else {
+                $(this).attr("src", "images/number10.png");
+                score += 1000;
+                setTimeout(() => {
+                    $(this).attr("src", "images/number10.png").remove()
+                }, 500)
+            }
+
+            $(this).stop();
+            $(this).css('pointer-events', "none");
+            let format_score = accounting.formatNumber(score);
+            $('#text-score').text(`$${format_score}`);
+        })
+
+        // 按下彩券
+        $("#top").on("click", ".lotto", function () {
+            const get_lotto = new Audio();
+            get_lotto.src = "music/lotto.mp3";
+            get_lotto.play();
+            $(this).css('transform', 'rotate(0deg) scale(2)')
+            $(this).stop();
+            $(this).css('pointer-events', "none");
+
+            setTimeout(() => {
+                $(this).attr("src", "images/lottery.png").remove()
+                $('#lottery').text('x1');
+            }, 1000)
+
+        })
+
+        // 結算
+        function total(total) {
+            (async () => {
+                const { value: name } = await Swal.fire({
+                    imageUrl: 'images/total.png',
+                    imageWidth: 100,
+                    imageHeight: 100,
+                    allowOutsideClick: false,
+                    title: '你的總資產',
+                    text: `$${accounting.formatNumber(total)}`,
+                    input: 'text',
+                    inputPlaceholder: '請輸入姓名',
+                    confirmButtonText: '確定',
+                    inputAttributes: {
+                        maxlength: 5,
+                        autocapitalize: 'off',
+                        autocorrect: 'off'
+                    },
+                    inputValidator: (value) => {
+                        for (let i = 0; i < player_info.length; i++) {
+                            if (value == player_info[i].name) {
+                                return '這個名稱已被使用'
+                            }
+                        }
+
+                        if (!value) {
+                            return '請輸入姓名!'
+                        }
+                    }
+                })
+                if (name) {
+                    let info = {
+                        name: name,
+                        money: accounting.formatNumber(total)
+                    }
+                    player_info.push(info)
+                    localStorage.setItem('information', JSON.stringify(player_info));
+                    let storage = JSON.parse(localStorage.getItem('information'));
+                    if (storage.length > 1) {
+                        // 排序
+                        storage = storage.sort(function (a, b) {
+                            return parseInt(b.money.replace(/[,.*+?^${}()|[\]\\]/g, "")) - parseInt(a.money.replace(/[,.*+?^${}()|[\]\\]/g, ""));
+                        });
+                    }
+
+                    // 顯示在表格上
+                    $("#rank").show()
+                    $('#rank table tbody').empty()
+                    for (let i = 0; i < storage.length; i++) {
+                        $('#rank table tbody').append(
+                            `<tr align=center>
+                        <td>${i + 1}</td>
+                        <td>${storage[i].name}</td>
+                        <td>$${storage[i].money}</td>
+                        </tr`)
+                    }
+                    // 淡入按鈕
+                    $('#startbtn').fadeIn("slow")
+                    $('.title').fadeIn("slow")
+                    $('.info').fadeIn("slow")
+                    // 滾動到最底部
+                    window.scrollTo(0, document.body.scrollHeight);
+                    setTimeout(() => {
+                        $("#money_rain").fadeOut("slow")
+
+                    }, 5000)
+
+                }
+            })()
+        }
+
+    </script>
+</body>
+
+</html>

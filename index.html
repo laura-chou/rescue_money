@@ -37,21 +37,23 @@
             <img src="images/top-three.png" width="100%" title="富豪榜">
         </div>
         <div id="top">
-            <table border="0" width="100%" height="10%">
-                <tr align="center">
-                    <td width="33%" style="font-size: 30px;">
-                        <img id="loading-image" src="images/wallet.png" width="40px" height="40px">
-                        <div id="text-score">$0</div>
-                    </td>
-                    <td width="34%"><iframe id="iframe" src="html/countdown.html" width="100px" height="60px"
-                            frameborder="0"></iframe></td>
-                    <td width="33%" id="td">
-                        <img src="images/lottery.png" width="40px" height="40px">
-                        <div id="lottery" style="font-size:30px;">x0</div>
-                    </td>
-                </tr>
-            </table>
-
+            <div class="table">
+                <table border="0" width="100%">
+                    <tr align="center">
+                        <td width="33%" style="font-size: 30px;">
+                            <img id="loading-image" src="images/wallet.png" width="40px" height="40px">
+                            <div id="text-score">$0</div>
+                        </td>
+                        <td width="34%"><iframe id="iframe" src="html/countdown.html" width="100px" height="60px"
+                                frameborder="0"></iframe></td>
+                        <td width="33%" id="td">
+                            <img src="images/lottery.png" width="40px" height="40px">
+                            <div id="lottery" style="font-size:30px;">x0</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        
             <div id="store"></div>
         </div>
 
@@ -429,7 +431,7 @@
 
                     // 掉彩券
                     if (timeleft == fall_time || timeleft == fall_time2) {
-                        $('#store').append('<img class="lotto" src="images/lottery.png" width="50px" height="50px">');
+                        $('.table').append('<img class="lotto" src="images/lottery.png" width="50px" height="50px">');
                         let j = rand(90);
                         $('.lotto').css('transform', 'rotate(35deg)')
                         $('.lotto').css('margin-left', `${j}%`)

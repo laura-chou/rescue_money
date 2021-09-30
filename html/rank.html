@@ -38,7 +38,7 @@
 <script>
     const backend = "https://games-api-backend.herokuapp.com";
     $.ajax({
-        url: backend + "/RescueMoney/SearchAll",
+        url: backend + "/RescueMoney",
         method: "GET",
         dataType: 'json',
         success: function (response) {
@@ -105,7 +105,12 @@
         error: function (xhr, ajaxOptions, thrownError) {
             if (!xhr.responseJSON.success)
             {
-                let html = "<div class='error'><img src='../images/error.png' /><h1>此人不在富豪榜</h1></div>"
+                let html = "<div class='error'><img src='../images/error.png' />"
+                if (xhr.responseJSON.message == "沒有資料") {
+                    html += "<h1>暫無富豪</h1></div>";
+                } else {
+                    html += "<h1>此人不在富豪榜</h1></div>";
+                }
                 $("#rank").html(html);
             }
         }
@@ -114,7 +119,7 @@
     $("#btn_search").click(function(){
         $("#rank").html("<img class='load' src='../images/loading.svg'>");
         $.ajax({
-            url: backend + "/RescueMoney/Search/" + $("#search").val(),
+            url: backend + "/RescueMoney/" + $("#search").val(),
             method: "GET",
             dataType: 'json',
             success: function (response) {

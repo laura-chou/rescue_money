@@ -87,11 +87,12 @@
 
         HoldOn();
         $.ajax({
-            url: backend+'/Bonus/SearchAll',
+            url: backend+'/Bonus',
             method: "GET",
             dataType: 'json',
             // 成功時的function
             success: function (response) {
+                console.log(response)
                 bonus = response.result.jackpot;
                 amount = response.result.amount;
                 if (amount < 2) {
@@ -173,7 +174,7 @@
                 } 
             })
             $.ajax({
-                url: backend + "/RescueMoney/SearchAll",
+                url: backend + "/RescueMoney",
                 method: "GET",
                 dataType: 'json',
                 success: function (response) {
@@ -659,7 +660,7 @@
                     } else {
                         PlayerName = value;
                         return $.ajax({
-                            url: backend + "/RescueMoney/Add",
+                            url: backend + "/RescueMoney",
                             method: "POST",
                             dataType: 'json',
                             contentType: 'application/json',
@@ -751,13 +752,13 @@
         function UpdateBonus(nbonus, namount) {
             return new Promise((resolve, reject) => {
                 $.ajax({
-                    url: backend + "/Bonus/Update",
+                    url: backend + "/Bonus",
                     method: "PATCH",
                     data: JSON.stringify({ jackpot: nbonus*namount }),
                     dataType: 'json',
                     contentType: 'application/json',
                     success: function (response) {
-                        $.get(backend+'/Bonus/SearchAll', function (response) {
+                        $.get(backend+'/Bonus', function (response) {
                             bonus = response.result.jackpot;
                             amount = response.result.amount;
                             if (amount < 2) {

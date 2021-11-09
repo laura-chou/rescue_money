@@ -92,7 +92,6 @@
             dataType: 'json',
             // 成功時的function
             success: function (response) {
-                console.log(response)
                 bonus = response.result.jackpot;
                 amount = response.result.amount;
                 if (amount < 2) {

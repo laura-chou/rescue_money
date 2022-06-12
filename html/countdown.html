@@ -153,12 +153,10 @@
         const timerEl = document.querySelector('.timer');
         const secondsGroupEl = timerEl.querySelector('.seconds-group');
         // 暫停鍵變數
-      
-       
         let t = 0
         window.onmessage = function (e) {
-                t = e.data
-                initTimer(t)
+            t = e.data
+            if (typeof(t) == 'number') initTimer(t)
         };
         function initTimer(time) {
             // 顯示數字    
@@ -167,21 +165,20 @@
                 firstNum: secondsGroupEl.querySelector('.first'),
                 secondNum: secondsGroupEl.querySelector('.second')
             };
-         
+
             setTimeout(updateTimer, 1000);
 
             function updateTimer() {
                 let timeNumbers;
-                // 將參數t放進現在的時間秒數
-                var date = new Date();
+                // 將參數放進現在的時間秒數
+                let date = new Date();
                 date.setSeconds(time);
 
-
                 // valueOf()傳回Date物件的原始值
-                var newDate = new Date(date.valueOf() - 1000);
+                let newDate = new Date(date.valueOf() - 1000);
                 // 將時間轉陣列
-                var temp = newDate.toTimeString().split(" ");
-                var tempsplit = temp[0].split(':');
+                let temp = newDate.toTimeString().split(" ");
+                let tempsplit = temp[0].split(':');
                 time = tempsplit[2];
                 timeNumbers = time.split('');
                 updateTimerDisplay(timeNumbers);

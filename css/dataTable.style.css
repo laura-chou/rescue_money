@@ -1,0 +1,47 @@
+:root {
+  --white: #fff;
+  --light-green: #00A600;
+  --orange: #fe9901;
+}
+
+.table {
+  width: 100%;
+}
+
+.table thead th {
+  background-color: var(--light-green);
+  color: var(--white);
+}
+
+.table thead th:nth-child(1) {
+  width: 20%;
+}
+.table thead th:nth-child(2) {
+  width: 40%;
+}
+.table thead th:nth-child(3) {
+  width: 45%;
+}
+
+.table tbody td {
+  word-break: break-all;
+  vertical-align: middle;
+}
+
+.top1{
+  --bs-table-color: var(--orange);
+  color: var(--orange);
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.medal{
+  font-size: 25px;
+  animation: beat 2s infinite;
+}
+
+@keyframes beat {
+  0%{transform: scale(1);}
+  50%{transform: scale(1.1);}
+  100%{transform: scale(1);}
+}

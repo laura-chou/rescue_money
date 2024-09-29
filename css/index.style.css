@@ -1,0 +1,120 @@
+:root {
+  --black: #000;
+  --white: #fff;
+  --moon-yellow: #fff77e;
+}
+
+html,body {
+  height: 100%;
+  margin: 0;
+  background-color: var(--black);
+}
+
+#particles-js {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+}
+
+.title-section {
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5%;
+  position: relative;
+}
+
+.title-section img {
+  padding-top: 30px;
+  width: 350px;
+}
+
+.moon {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  box-shadow: 1rem 1rem 0 0 var(--moon-yellow);;
+  position: absolute;
+  top: 0;
+  right: 30px;
+}
+
+@media (max-width:576px) {
+  .moon {
+    width: 3rem;
+    height: 3rem;
+    box-shadow: 15px 0 var(--moon-yellow);
+    transform: rotate(40deg);
+    top: 10px;
+    right: 30px;
+  }
+}
+
+.select-section {
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 99;
+}
+
+.select-section div {
+  padding-top: 30px;
+}
+
+.select-section img {
+  width: 250px;
+}
+
+.select-section img:hover {
+  transform: scale(1.1);
+}
+
+/* ---- sweetalert ---- */
+.swal2-image {
+  margin-bottom: 0;
+}
+
+.alert-instructions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+
+.alert-instructions img {
+  width: 50px;
+}
+
+.alert-instructions span {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.accordion {
+  background-color: var(--white);
+  color: var(--black);
+  border: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+}
+
+.more {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.table thead th:nth-child(2) {
+  width: auto !important;
+}

@@ -1,0 +1,80 @@
+:root {
+  --white: #fff;
+  --light-gray: #ccc;
+  --dark-gray: #555;
+  --backgroud-gray: rgba(255, 250, 250, 0.4);
+  --error-red: #FF2D2D;
+  --light-green: #00A600;
+  --dark-green:#2D871A;
+}
+
+html,body {
+  margin: 0;
+  height: 100%;
+  background-image: url('../images/sky.jpg');
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}
+
+.background {
+  height: 100%;
+  background: var(--backgroud-gray);
+  text-align: center;
+  font-weight: bold;
+}
+
+.title {
+  padding: 4% 0 6% 0;
+}
+
+.title img {
+  width: 160px;
+}
+
+.worth img {
+  width: 280px;
+}
+
+.wallet {
+  margin: 20px 0;
+  font-size: 45px;
+}
+
+input[type=text] {
+  width: 350px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 3px solid var(--light-gray);
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  outline: none;
+}
+
+input[type=text]:focus {
+  border: 3px solid var(--dark-gray);
+}
+
+.error {
+  border: 3px solid var(--error-red) !important;
+}
+
+.button {
+  margin-top: 20px;
+}
+
+.btn {
+  background-color: var(--light-green);
+  border: none;
+  border-radius: 5px;
+  color: var(--white);
+  padding: 12px 25px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: var(--dark-green);
+}

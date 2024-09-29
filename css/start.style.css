@@ -1,0 +1,163 @@
+:root {
+  --timer-red: #CE0000;
+}
+
+html,body {
+  margin: 0;
+  height: 100%;
+}
+
+/* ---- particle ---- */
+#particles-js{
+  width: 100%;
+  height: 100%;
+  background-image: url('../images/sky.jpg');
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  position: relative;
+}
+.particles-js-canvas-el {
+  position: absolute;
+  top: 0;
+}
+/* ---- section ---- */
+section img {
+  width: 50px;
+}
+section span {
+  font-size: 40px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ---- fireworks section ---- */
+.fireworks {
+  position: absolute;
+  height: 95%;
+}
+
+/* ---- playground section ---- */
+#playground {
+  cursor: url('../images/catch.png') 32 32, auto;
+  position: relative;
+  overflow: hidden;
+  top: 0;
+  height: 100%;
+  z-index: 98;
+}
+#playground:active { 
+  cursor: url('../images/grab.png') 32 32, auto;
+}
+
+#pause {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+  z-index: 99;
+}
+
+#time-iframe {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.money,
+.clock {
+  position: absolute;
+  width: 100px;
+}
+.lotto {
+  position: absolute;
+  width: 80px;
+}
+/* ---- bottom section ---- */
+.bottom {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+}
+.wallet,
+.lottery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  z-index: 99;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fadeOut2 {
+  from { opacity: 1; }
+  to { opacity: 0.5; }
+}
+
+@keyframes spin { 
+  100% { 
+    transform:rotate(360deg); 
+  } 
+}
+
+@keyframes enlarge {
+  from { transform: scale(1); }
+  to { transform: scale(1.2); }
+}
+
+@keyframes enlarge2 {
+  from { transform: scale(1); }
+  to { transform: scale(1.7); }
+}
+
+/* ---- timer ---- */
+#timer {
+  text-align: center;
+  margin-top: 5px;
+}
+
+.timeTo div {
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.timeTo-alert {
+  color: var(--timer-red) !important;
+}
+
+.time-stop {
+  opacity: 0.3;
+}
+
+.win-number {
+  width: 80px;
+}
+
+.jockpet {
+  display: flex;
+  justify-content: center;
+}
+
+.jockpet img {
+  width: 60px;
+  height: 60px;
+}
+
+.jockpet span {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+/* ---- sweetalert2 ---- */
+@media (max-width:576px) { 
+  .swal2-radio {
+    margin: 1rem 10px 3px;
+  }
+}

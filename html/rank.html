@@ -1,183 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>富豪榜</title>
-    <link rel="icon" type="image/png" href="../images/top-three.png"> 
-    <link rel="stylesheet" href="../css/particles.css">
-    <link rel="stylesheet" href="../css/fontawesome.min.css">
-    <link rel="stylesheet" href="../css/dataTables.material.min.css">
-    <link rel="stylesheet" href="../css/material-components-web.min.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>富豪榜</title>
+  <link rel="icon" type="image/png" href="../images/top-three.png"> 
+  <link rel="stylesheet" href="../css/fontawesome.min.css">
+  <link rel="stylesheet" href="../css/solid.min.css">
+  <link rel="stylesheet" href="../css/dataTables.bulma.css">
+  <link rel="stylesheet" href="../css/bulma.min.css">
+  <link rel="stylesheet" href="../css/dataTable.style.css">
+  <link rel="stylesheet" href="../css/rank.style.css">
 </head>
 <body>
-    <div id="particles-js">
-        <div class="particle-modal">
-            <div class="title">
-                <img src="../images/top-three.png" width="10%">
-                <span>富豪榜</span>
-            </div>
-            <div class="search">
-                <input type="text" id="search" placeholder="請輸入姓名">
-                <button id="btn_search" class="search-confirm">搜尋</button>
-                <button id="btn_clear" class="search-confirm clear">清除</button>
-            </div>
-            <div id="rank">
-                <img class="load" src="../images/loading.svg">
-            </div>
-        </div>
+  <div id="particles-js">
+    <div class="particle-modal">
+      <div class="logo">
+        <img src="../images/top-three.png">
+      </div>
+      <div class="search">
+        <input id="search" type="text" autocomplete="off" placeholder="請輸入姓名">
+        <button id="clear">
+          <i class="fa-solid fa-x"></i>
+        </button>
+      </div>
+      <div id="rank">
+        <img class="load" src="../images/loading.svg">
+      </div>
     </div>
+  </div>
 </body>
 <script src="../js/particles.min.js"></script>
-<script src="../js/particles.app.js"></script>
-<script src="../js/jquery-3.5.0.min.js"></script>
+<script src="../js/jquery-3.7.1.min.js"></script>
 <script src="../js/fontawesome.min.js"></script>
-<script src="../js/jquery.dataTables.min.js"></script>
-<script src="../js/dataTables.material.min.js"></script>
-<script>
-    const backend = "https://games-api-backend.herokuapp.com";
-    $.ajax({
-        url: backend + "/RescueMoney",
-        method: "GET",
-        dataType: 'json',
-        success: function (response) {
-            let html = "<table class='rank_table mdl-data-table'>"+
-                        "<thead><tr><th>排名</th>"+
-                        "<th>姓名</th>"+
-                        "<th>身價</th></tr></thead><tbody>";
-            
-            for(let i = 0; i < response.rescuemoney.length; i++){
-                if (i == "0") {
-                    html += "<tr class='winner'>";
-                    html += "<td><i class='fas fa-medal medal'></i></td>";
-                }
-                else {
-                    html += "<tr>";
-                    html += "<td>" + (i + 1) + "</td>";
-                }
-                html += "<td>" + response.rescuemoney[i].player + "</td>";
-                html += "<td>" + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(response.rescuemoney[i].money) + "</td>";
-                html += "</tr>";
-            }
-            html += "</tbody></table>";
-            $("#rank").html(html);
-            
-            // 計算畫面高度
-            let pageLength = 10;
-            if(document.body.clientHeight > 500 && document.body.clientHeight <= 600)
-            {
-                pageLength = 5
-            }
-            if(document.body.clientHeight > 600 && document.body.clientHeight <= 720)
-            {
-                pageLength = 7
-            }
-            if(document.body.clientHeight > 720 && document.body.clientHeight < 800)
-            {
-                pageLength = 8
-            }
+<script src="../js/dataTables.js"></script>
+<script src="../js/dataTables.bulma.js"></script>
+<script type="module">
+  import { setParticles, accordionEffect } from "../js/common.js"
+  import { getRankHtml } from "../js/rank.js"
+  import { getAllPlayers } from "../js/store.js"
 
-            $(".rank_table").DataTable({
-                searching: false,
-                autoWidth: false,
-                ordering: false,
-                bLengthChange: false,
-                bInfo: false,
-                pageLength: pageLength,
-                columnDefs: [
-                    {
-                        targets: ['_all'],
-                        className: 'mdc-data-table__cell'
-                    }
-                ],
-                "language": {
-                    "paginate": {
-                        "first": "&#171;",
-                        "previous": "&#8249;",
-                        "next": "&#8250;",
-                        "last": "&#187;"
-                    },
-                }
-    
-            });
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            if (!xhr.responseJSON.success)
-            {
-                let html = "<div class='error'><img src='../images/error.png' />"
-                if (xhr.responseJSON.message == "沒有資料") {
-                    html += "<h1>暫無富豪</h1></div>";
-                } else {
-                    html += "<h1>此人不在富豪榜</h1></div>";
-                }
-                $("#rank").html(html);
-            }
+  $(() => {
+    setParticles("coin")
+  })
+
+  const initialDataTable = (emptyMsg = '暫無富豪') => {
+    $(".table").DataTable({
+      searching: false,
+      autoWidth: false,
+      ordering: false,
+      bLengthChange: false,
+      bInfo: false,
+      pageLength: 10,
+      columnDefs: [
+        {
+          targets: ['_all'],
+          className: 'mdc-data-table__cell'
         }
+      ],
+      language: {
+        paginate: {
+          first: "&#171;",
+          previous: "&#8249;",
+          next: "&#8250;",
+          last: "&#187;"
+        },
+        emptyTable: emptyMsg
+      }
     })
+  }
 
-    $("#btn_search").click(function(){
-        $("#rank").html("<img class='load' src='../images/loading.svg'>");
-        $.ajax({
-            url: backend + "/RescueMoney/" + $("#search").val(),
-            method: "GET",
-            dataType: 'json',
-            success: function (response) {
-                let html = "<table class='rank_table mdl-data-table'>"+
-                            "<thead><tr><th>排名</th>"+
-                            "<th>姓名</th>"+
-                            "<th>身價</th></tr></thead><tbody>";
-                for(let i = 0; i < response.rescuemoney.length; i++){
-                    if (response.rescuemoney[i].rank == 1) {
-                        html += "<tr class='winner'>";
-                        html += "<td><i class='fas fa-medal medal'></i></td>";
-                    }
-                    else {
-                        html += "<tr>";
-                        html += "<td>" + response.rescuemoney[i].rank + "</td>";
-                    }
-                    html += "<td>" + response.rescuemoney[i].player + "</td>";
-                    html += "<td>" + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(response.rescuemoney[i].money) + "</td>";
-                    html += "</tr>";
-                }
-                html += "</tbody></table>";
-                $("#rank").html(html);
-                $(".rank_table").DataTable({
-                    searching: false,
-                    autoWidth: false,
-                    ordering: false,
-                    bLengthChange: false,
-                    bInfo: false,
-                    paging: false,
-                    columnDefs: [
-                        {
-                            targets: ['_all'],
-                            className: 'mdc-data-table__cell'
-                        }
-                    ],
-                    "language": {
-                        "paginate": {
-                            "first": "&#171;",
-                            "previous": "&#8249;",
-                            "next": "&#8250;",
-                            "last": "&#187;"
-                        },
-                    }
-        
-                });
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                if (!xhr.responseJSON.success)
-                {
-                    let html = "<div class='error'><img src='../images/error.png' /><h1>此人不在富豪榜</h1></div>"
-                    $("#rank").html(html);
-                }
-            }
-        })
-    });
+  const players = await getAllPlayers()
+  $("#rank").html(getRankHtml(players))
+  initialDataTable()
 
-    $("#btn_clear").click(function(){
-        location.reload();
-    });
+  $("#search").on("change", () => {
+    const searchValue = $("#search").val()
+    const searchData = players.filter(data => data.players.some(player => player.includes(searchValue)))
+    $("#rank").html(getRankHtml(searchData))
+    initialDataTable('查無富豪')
+  })
+
+  $("#clear").click(() => {
+    if ($("#search").val() !== '') {
+      $("#search").val('')
+      $("#rank").html(getRankHtml(players))
+      initialDataTable()
+    }
+  })
+  
+  $("#rank").on("click", ".accordion", event => {
+    accordionEffect(event.currentTarget)
+  })
 </script>
 </html>

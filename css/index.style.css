@@ -95,6 +95,15 @@ html,body {
   font-weight: bold;
 }
 
+@media (max-width:390px) {
+  .alert-instructions img {
+    width: 45px;
+  }
+  .alert-instructions span {
+    font-size: 26px;
+  }
+}
+
 .accordion {
   background-color: var(--white);
   color: var(--black);

@@ -116,10 +116,10 @@ export const insertPlayer = (player, money) => {
       contentType: 'application/json',
       data: JSON.stringify({ player: player, money: parseInt(money) }),
       success: function (response) {
-        resolve(response.topFive)
+        resolve(response)
       },
       error: function (xhr, ajaxOptions, thrownError) {
-        resolve(false)
+        resolve(null)
       }
     })
   })

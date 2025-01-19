@@ -108,7 +108,7 @@
     })
   }
 
-  const LottoAlert = async () => {
+  const lottoAlert = async () => {
     const converter = window.index.NumberToChineseWords
     let bonus = await getJackpot()
     if (bonus != 0) {
@@ -179,8 +179,7 @@
                 allowOutsideClick: false
               })
               bonus = await updateJackpot(true)
-            }
-            else {
+            } else {
               audioEffect("disappoint")
               bonus = await updateJackpot(false)
               await Swal.fire({
@@ -191,8 +190,7 @@
                 allowOutsideClick: false
               })
             }
-          } 
-          else {
+          } else {
             lottoInfo[lotto.id-1].isChoose = true
             setStoreItem("lotto", JSON.stringify(lottoInfo))
             setLottoPiece(getLottoPiece(lottoInfo))
@@ -202,9 +200,7 @@
       setStoreItem('process', 3)
       removeStorage(2)
       window.location.href = `${pathName}html/settle.html`
-    }
-    else 
-    {
+    } else {
       serverError()
     }
   }
@@ -218,7 +214,7 @@
       showConfirmButton: false,
       allowOutsideClick: false,
       willClose: () => {
-        Pause()
+        pause()
         removeStorage()
         window.location.href = pathName
       }
@@ -228,7 +224,7 @@
   if (process === 2) {
     setTimer(0, false)
     $('#timer').text("00").addClass('time-stop');
-    await LottoAlert()
+    await lottoAlert()
   }
 
   const gameInterval = setInterval(async () => {
@@ -250,23 +246,22 @@
         moneyId++
       }
       
-      FallClock()
-      FallLotto()
-    }
-    else {
+      fallClock()
+      fallLotto()
+    } else {
       if (walletMoney === 0) {
         removeStorage()
         window.location.href = pathName
         return
       }
-      Pause()
+      pause()
       setStoreItem('process', 2)
-      await LottoAlert()
+      await lottoAlert()
     }
   }, 1000)
 
   $('#pause').click(() => { 
-    Pause()
+    pause()
     window.location.href = pathName
   })
   
@@ -282,12 +277,12 @@
     setWalletMoney(walletMoney)
   })
 
-  const Pause = () => {
+  const pause = () => {
     clearInterval(gameInterval)
     $("#playground").find(".money").remove()
   }
 
-  const GetLottoFallTime = () => {
+  const getLottoFallTime = () => {
     let randomNumber = randNumberWithMin(10,timer)
     if (!lottoInfo.some(lotto => lotto.fallTime == randomNumber)) {
       lottoInfo.push({
@@ -311,7 +306,7 @@
     }, 1000)
     $(target).css("pointer-events", "none")
     clockInfo.isCatch = true
-    GetLottoFallTime()
+    getLottoFallTime()
     audioEffect("lotto")
     timer += 10
     setStoreItem('time', timer)
@@ -323,7 +318,7 @@
     }
   })
 
-  const FallClock = () => {
+  const fallClock = () => {
     if (timer === clockInfo.fallTime && !clockInfo.isFall) {
       clockInfo.isFall = true
       setStoreItem("clock", JSON.stringify(clockInfo))
@@ -355,7 +350,7 @@
     audioEffect("lotto")
   })
 
-  const FallLotto = () => {
+  const fallLotto = () => {
     for (const item of lottoInfo) {
       if (timer === item.fallTime && !item.isFall) {
         item.isFall = true

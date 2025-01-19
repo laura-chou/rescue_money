@@ -38,8 +38,7 @@
     if (wallet != null && wallet != "0") {
       history.pushState(null, '', pathName)
       setWalletMoney(wallet)
-    }
-    else {
+    } else {
       serverError()
     }
   })
@@ -62,23 +61,26 @@
   $('#send').click(async () => { 
     const name = $('#name').val()
     if (name.trim() != '') {
+      $("#send").addClass("disabled")
       const result = await insertPlayer(name, getStoreItem("wallet"))
-      if (result) {
-        audioEffect("rich")
-        Swal.fire({
-          html: `<img style='width:90px' src='${pathName}images/value.png'/>
-                  <h2 style='margin-bottom:0'>恭喜成為 5 大富豪之一</h2>`,
-          allowOutsideClick: false,
-          confirmButtonText: '確定'
-        }).then(result => {
-          removeStorage()
-          window.location.href = pathName
-        })
+      if (Object.hasOwn(result, 'topFive')) {
+        if (result.topFive) {
+          audioEffect("rich")
+          Swal.fire({
+            html: `<img style='width:90px' src='${pathName}images/value.png'/>
+                    <h2 style='margin-bottom:0'>恭喜成為 5 大富豪之一</h2>`,
+            allowOutsideClick: false,
+            confirmButtonText: '確定'
+          }).then(result => {
+            settleCompleted()
+          })
+        } else {
+          settleCompleted()
+        }
       } else {
         serverError()
       }
-    }
-    else {
+    } else {
       $('#name').addClass('error')
     }
   })
@@ -90,5 +92,10 @@
       $('#name').val('')
     }
   })
+
+  const settleCompleted = () => {
+    removeStorage()
+    window.location.href = pathName
+  }
 </script>
 </html>

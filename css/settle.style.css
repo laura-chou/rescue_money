@@ -78,3 +78,8 @@ input[type=text]:focus {
 .btn:hover {
   background-color: var(--dark-green);
 }
+
+.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}

@@ -1,10 +1,12 @@
-export const getPathName = () => {
+const getPathName = () => {
   let path = '/'
   if (window.location.pathname.includes('rescue_money')) {
     path = '/rescue_money/'
   }
   return path
 }
+
+export const pathName = getPathName()
 
 export const audioEffect = (src) => {
   const audio = new Audio();

@@ -34,12 +34,11 @@
 <script type="module">
   import { getTimer, getWalletMoney, getClockInfo, getLottoInfo, getProcess, 
     setStoreItem, getJackpot, updateJackpot, removeStorage } from "../js/store.js"
-  import { getPathName, audioEffect,  randNumber, randNumberWithMin, setParticles } from "../js/common.js"
+  import { pathName, audioEffect,  randNumber, randNumberWithMin, setParticles } from "../js/common.js"
   import { getLottoPiece, getLottoChance, getJockpotHtml, setWalletMoney, setLottoPiece } from "../js/start.js"
 
   let timer = getTimer()
   const process = getProcess()
-  const pathName = getPathName()
 
   const initSetUp = () => {
     setStoreItem('time', timer)
@@ -269,10 +268,10 @@
     const target = event.currentTarget
     $(target).css("pointer-events", "none")
     audioEffect("money")
-    $(target).css({ animation: "fadeOut 1s linear" })
+    $(target).css({ animation: "fadeOut .5s linear" })
     setTimeout(() => {
       $(target).remove()
-    },1000)
+    },500)
     walletMoney += moneyData.find(data => data.image === target.name).score
     setWalletMoney(walletMoney)
   })

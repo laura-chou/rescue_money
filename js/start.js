@@ -1,4 +1,4 @@
-import { moneyFormat, getPathName } from './common.js'
+import { moneyFormat, pathName } from './common.js'
 import { setStoreItem } from './store.js'
 
 export const getLottoPiece = (lottoInfo) => {
@@ -11,7 +11,7 @@ export const getLottoChance = (lottoInfo) => {
 }
 
 export const getJockpotHtml = (bonus) => {
-  return `<img style='width:90px' src='${getPathName()}images/win-money.png'/>
+  return `<img style='width:90px' src='${pathName()}images/win-money.png'/>
           <h1 style='margin-bottom:0'>恭喜獲得</h1>
           <h2 style='margin-bottom:0;color:red;'>$${moneyFormat(bonus)}</h2>`
 }

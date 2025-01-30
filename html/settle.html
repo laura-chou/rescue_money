@@ -28,10 +28,8 @@
 <script src="../js/sweetalert2@11.js"></script>
 <script type="module">
   import { getStoreItem, insertPlayer, removeStorage } from "../js/store.js"
-  import { getPathName, audioEffect } from "../js/common.js"
+  import { pathName, audioEffect } from "../js/common.js"
   import { setWalletMoney } from "../js/start.js"
-
-  const pathName = getPathName()
 
   $(() => {
     const wallet = getStoreItem("wallet")

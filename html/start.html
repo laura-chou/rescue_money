@@ -30,11 +30,11 @@
 <script src="../js/jquery.time-to.js"></script>
 <script src="../js/sweetalert2@11.js"></script>
 <script src="../js/particles.min.js"></script>
-<script src="../js/number-to-chinese-words.min.js"></script>
+<script src="../js/bignumber.min.js"></script>
 <script type="module">
   import { getTimer, getWalletMoney, getClockInfo, getLottoInfo, getProcess, 
     setStoreItem, getJackpot, updateJackpot, removeStorage } from "../js/store.js"
-  import { pathName, audioEffect,  randNumber, randNumberWithMin, setParticles } from "../js/common.js"
+  import { pathName, audioEffect,  randNumber, randNumberWithMin, setParticles, moneyFormat } from "../js/common.js"
   import { getLottoPiece, getLottoChance, getJockpotHtml, setWalletMoney, setLottoPiece } from "../js/start.js"
 
   let timer = getTimer()
@@ -108,7 +108,6 @@
   }
 
   const lottoAlert = async () => {
-    const converter = window.index.NumberToChineseWords
     let bonus = await getJackpot()
     if (bonus != 0) {
       for (const lotto of getLottoChance(lottoInfo)) {
@@ -120,8 +119,10 @@
             allowOutsideClick: false,
             title: '一合彩',
             html: `<div>
-                    獎金上看<b style="color:red;">${converter.toWords(bonus)}</b>
-                    <br>
+                    獎金上看
+                    <br/>
+                    <b style="color:red;">$${moneyFormat(bonus)}</b>
+                    <br/>
                     你有 ${getLottoPiece(lottoInfo)} 張要花 1000 元購買 1 張嗎?
                   </div>`,
             showCancelButton: true,
@@ -169,7 +170,8 @@
               setTimeout(() => {
                 setParticles('cloud')
               }, 5000)
-              walletMoney += bonus
+              const convertBonus = new BigNumber(bonus.toString()).toFixed(0);
+              walletMoney += convertBonus
               setWalletMoney(walletMoney)
               await Swal.fire({
                 html: getJockpotHtml(bonus),

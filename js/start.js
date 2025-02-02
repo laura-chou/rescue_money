@@ -24,3 +24,8 @@ export const setWalletMoney = (money) => {
 export const setLottoPiece = (lotto) => {
   $('.lotto-piece').text(`x${lotto}`);
 }
+
+export const numberFormat = (number) => {
+  const num = new BigNumber(number.toString()).toFixed(0);
+  return BigInt(num);
+}

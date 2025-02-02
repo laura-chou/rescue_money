@@ -34,11 +34,21 @@
 <script type="module">
   import { getTimer, getWalletMoney, getClockInfo, getLottoInfo, getProcess, 
     setStoreItem, getJackpot, updateJackpot, removeStorage } from "../js/store.js"
-  import { pathName, audioEffect,  randNumber, randNumberWithMin, setParticles, moneyFormat } from "../js/common.js"
-  import { getLottoPiece, getLottoChance, getJockpotHtml, setWalletMoney, setLottoPiece } from "../js/start.js"
+  import { pathName, audioEffect, randNumber, randNumberWithMin, setParticles, moneyFormat } from "../js/common.js"
+  import { getLottoPiece, getLottoChance, getJockpotHtml, setWalletMoney, setLottoPiece, 
+    numberFormat } from "../js/start.js"
 
   let timer = getTimer()
   const process = getProcess()
+  let moneyId = 0
+  let walletMoney = getWalletMoney()
+  const moneyData = [
+    { image: "one-hundred", score: 100 },
+    { image: "five-hundred", score: 500 },
+    { image: "one-thousand", score: 1000 }
+  ]
+  let clockInfo = getClockInfo()
+  let lottoInfo = getLottoInfo()
 
   const initSetUp = () => {
     setStoreItem('time', timer)
@@ -60,17 +70,6 @@
     initSetUp ()
     setTimer(timer)
   })
-  
-  let moneyId = 0
-  let walletMoney = getWalletMoney()
-  const moneyData = [
-    { image: "one-hundred", score: 100},
-    { image: "five-hundred", score: 500},
-    { image: "one-thousand", score: 1000}
-  ]
-
-  let clockInfo = getClockInfo()
-  let lottoInfo = getLottoInfo()
 
   const move = (moneyId) => {
     let elementCss = $(`#money${moneyId}`).css('right')
@@ -170,8 +169,7 @@
               setTimeout(() => {
                 setParticles('cloud')
               }, 5000)
-              const convertBonus = new BigNumber(bonus.toString()).toFixed(0);
-              walletMoney += convertBonus
+              walletMoney = BigInt(walletMoney) + numberFormat(bonus)
               setWalletMoney(walletMoney)
               await Swal.fire({
                 html: getJockpotHtml(bonus),

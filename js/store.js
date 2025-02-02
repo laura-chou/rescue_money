@@ -114,7 +114,7 @@ export const insertPlayer = (player, money) => {
       method: "POST",
       dataType: 'json',
       contentType: 'application/json',
-      data: JSON.stringify({ player: player, money: parseInt(money) }),
+      data: JSON.stringify({ player: player, money: money }),
       success: function (response) {
         resolve(response)
       },

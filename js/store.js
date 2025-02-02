@@ -33,7 +33,7 @@ export const getLottoInfo = () => {
   if (info != undefined) {
     return JSON.parse(info);
   }
-  const defaultInfo = [{ id: 1, fallTime: randNumberWithMin(10, getTimer()), isCatch: false, isFall: false, isChoose: false }]
+  const defaultInfo = [{ id: 1, fallTime: randNumberWithMin(10, getTimer()-1), isCatch: false, isFall: false, isChoose: false }]
   setStoreItem("lotto", JSON.stringify(defaultInfo))
   return defaultInfo;
 }

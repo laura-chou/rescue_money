@@ -91,6 +91,10 @@ section span {
   z-index: 99;
 }
 
+.wallet {
+  word-break: break-word;
+}
+
 @keyframes fadeOut {
   from { opacity: 1; }
   to { opacity: 0; }

@@ -37,8 +37,9 @@ html,body {
 }
 
 .wallet {
-  margin: 20px 0;
+  margin: 20px 10px;
   font-size: 45px;
+  word-break: break-word;
 }
 
 input[type=text] {

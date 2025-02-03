@@ -29,3 +29,7 @@ export const numberFormat = (number) => {
   const num = new BigNumber(number.toString()).toFixed(0);
   return BigInt(num);
 }
+
+export const isBigIntType = (number) => {
+  return typeof number === 'bigint';
+}

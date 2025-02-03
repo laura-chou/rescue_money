@@ -36,7 +36,7 @@
     setStoreItem, getJackpot, updateJackpot, removeStorage } from "../js/store.js"
   import { pathName, audioEffect, randNumber, randNumberWithMin, setParticles, moneyFormat } from "../js/common.js"
   import { getLottoPiece, getLottoChance, getJockpotHtml, setWalletMoney, setLottoPiece, 
-    numberFormat } from "../js/start.js"
+    numberFormat, isBigIntType } from "../js/start.js"
 
   let timer = getTimer()
   const process = getProcess()
@@ -128,8 +128,8 @@
             confirmButtonText: '買',
             cancelButtonText: '不買'
           })
-          if (result.value) { 
-            walletMoney-=1000
+          if (result.value) {
+            walletMoney -= isBigIntType(walletMoney) ? BigInt(1000) : 1000
             lottoInfo[lotto.id-1].isChoose = true
             setStoreItem("lotto", JSON.stringify(lottoInfo))
             setLottoPiece(getLottoPiece(lottoInfo))
@@ -282,15 +282,18 @@
   }
 
   const getLottoFallTime = () => {
-    let randomNumber = randNumberWithMin(10,timer)
-    if (!lottoInfo.some(lotto => lotto.fallTime == randomNumber)) {
-      lottoInfo.push({
-        id: 2,
-        fallTime: randNumberWithMin(10,timer),
-        isCatch: false,
-        isFall: false,
-        isChoose: false
-      })
+    while (lottoInfo.length < 2)
+    {
+      let randomNumber = randNumberWithMin(10,timer)
+      if (!lottoInfo.some(lotto => lotto.fallTime == randomNumber)) {
+        lottoInfo.push({
+          id: 2,
+          fallTime: randomNumber,
+          isCatch: false,
+          isFall: false,
+          isChoose: false
+        })
+      }
     }
     setStoreItem("lotto", JSON.stringify(lottoInfo))
   }

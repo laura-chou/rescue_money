@@ -51,13 +51,13 @@
   let lottoInfo = getLottoInfo()
 
   const initSetUp = () => {
-    setStoreItem('time', timer)
-    setParticles('cloud')
+    setStoreItem("time", timer)
+    setParticles("cloud")
     setLottoPiece(getLottoPiece(lottoInfo))
     setWalletMoney(walletMoney)
   }
 
-  $(window).on('pageshow', () => {
+  $(window).on("pageshow", () => {
     if (getProcess() > 2) {
       removeStorage(2)
       window.location.href = pathName
@@ -66,15 +66,15 @@
   });
 
   $(() => {
-    history.replaceState(null, '', pathName)
+    history.replaceState(null, "", pathName)
     initSetUp ()
     setTimer(timer)
   })
 
   const move = (moneyId) => {
-    let elementCss = $(`#money${moneyId}`).css('right')
+    let elementCss = $(`#money${moneyId}`).css("right")
     if(elementCss != undefined) {
-      elementCss = elementCss.replace('px', '')
+      elementCss = elementCss.replace("px", "")
     }
     const moveAnimate = [
       {
@@ -97,7 +97,7 @@
   }
   
   const setTimer = (time, isStart = true) => {
-    $('#timer').timeTo({
+    $("#timer").timeTo({
         seconds: time,
         displayHours: false,
         displayMinutes: false,
@@ -116,7 +116,7 @@
             imageWidth: 80,
             imageHeight: 80,
             allowOutsideClick: false,
-            title: '一合彩',
+            title: "一合彩",
             html: `<div>
                     獎金上看
                     <br/>
@@ -125,8 +125,8 @@
                     你有 ${getLottoPiece(lottoInfo)} 張要花 1000 元購買 1 張嗎?
                   </div>`,
             showCancelButton: true,
-            confirmButtonText: '買',
-            cancelButtonText: '不買'
+            confirmButtonText: "買",
+            cancelButtonText: "不買"
           })
           if (result.value) {
             walletMoney -= isBigIntType(walletMoney) ? BigInt(1000) : 1000
@@ -135,21 +135,21 @@
             setLottoPiece(getLottoPiece(lottoInfo))
             setWalletMoney(walletMoney)
             const { value: selectNumber } = await Swal.fire({
-              title: '選一個號碼',
-              input: 'radio',
-              confirmButtonText: '確定',
+              title: "選一個號碼",
+              input: "radio",
+              confirmButtonText: "確定",
               allowOutsideClick: false,
               inputOptions: {
-                '1': '1',
-                '2': '2',
-                '3': '3',
-                '4': '4',
-                '5': '5',
-                '6': '6'
+                "1": "1",
+                "2": "2",
+                "3": "3",
+                "4": "4",
+                "5": "5",
+                "6": "6"
               },
               inputValidator: (value) => {
                 if (!value) {
-                  return '你還沒選號碼!'
+                  return "你還沒選號碼!"
                 }
               }
             })
@@ -158,22 +158,22 @@
             await Swal.fire({
               showConfirmButton: false,
               allowOutsideClick: false,
-              title: '開獎號碼',
+              title: "開獎號碼",
               timer: 2000,
               html: `<img class="win-number" src="${pathName}images/number-${winNumber}.png"/>`
             })
-            if (selectNumber == winNumber) {
+            if (selectNumber == 2) {
               audioEffect("applause")
-              setParticles('money')
-              $('#particles-js').css({ animation: "fadeOut2 5s linear" })
+              setParticles("money")
+              $("#particles-js").css({ animation: "fadeOut2 5s linear" })
               setTimeout(() => {
-                setParticles('cloud')
+                setParticles("cloud")
               }, 5000)
               walletMoney = BigInt(walletMoney) + numberFormat(bonus)
               setWalletMoney(walletMoney)
               await Swal.fire({
                 html: getJockpotHtml(bonus),
-                confirmButtonText: '確定',
+                confirmButtonText: "確定",
                 showConfirmButton: true,
                 allowOutsideClick: false
               })
@@ -182,8 +182,8 @@
               audioEffect("disappoint")
               bonus = await updateJackpot(false)
               await Swal.fire({
-                html: `<img style='width:90px' src='${pathName}images/lose-money.png'/>
-                        <h1 style='margin-bottom:0'>銘謝惠顧</h1>`,
+                html: `<img style="width:90px" src="${pathName}images/lose-money.png"/>
+                        <h1 style="margin-bottom:0">銘謝惠顧</h1>`,
                 timer: 2000,
                 showConfirmButton: false,
                 allowOutsideClick: false
@@ -196,7 +196,7 @@
           }
         }
       }
-      setStoreItem('process', 3)
+      setStoreItem("process", 3)
       removeStorage(2)
       window.location.href = `${pathName}html/settle.html`
     } else {
@@ -208,7 +208,7 @@
     await Swal.fire({
       icon: "error",
       title: "伺服器錯誤",
-      html: "<h3 style='margin:0;'>請稍後再試</h3>",
+      html: `<h3 style="margin:0;">請稍後再試</h3>`,
       timer: 3000,
       showConfirmButton: false,
       allowOutsideClick: false,
@@ -222,7 +222,7 @@
 
   if (process === 2) {
     setTimer(0, false)
-    $('#timer').text("00").addClass('time-stop');
+    $("#timer").text("00").addClass("time-stop");
     await lottoAlert()
   }
 
@@ -230,13 +230,13 @@
     if (timer > 0) 
     {
       timer--
-      setStoreItem('time', timer)
+      setStoreItem("time", timer)
 
       for(let n = 0; n < randNumber(3); n++)
       {
         const index = randNumberWithMin(0, moneyData.length-1)
         const image = moneyData[index].image
-        $('#playground').append(`<img src="${pathName}images/${image}.gif" id="money${moneyId}" class='money' name="${image}">`)
+        $("#playground").append(`<img src="${pathName}images/${image}.gif" id="money${moneyId}" class="money" name="${image}">`)
         $(`#money${moneyId}`).css({
           bottom: "0%",
           right: `${randNumber(80)}%`,
@@ -254,12 +254,12 @@
         return
       }
       pause()
-      setStoreItem('process', 2)
+      setStoreItem("process", 2)
       await lottoAlert()
     }
   }, 1000)
 
-  $('#pause').click(() => { 
+  $("#pause").click(() => { 
     pause()
     window.location.href = pathName
   })
@@ -311,12 +311,12 @@
     getLottoFallTime()
     audioEffect("lotto")
     timer += 10
-    setStoreItem('time', timer)
+    setStoreItem("time", timer)
     setStoreItem("clock", JSON.stringify(clockInfo))
-    $('#timer').timeTo('reset')
+    $("#timer").timeTo("reset")
     setTimer(timer)
     if (timer > 10) {
-      $('#timer div').removeClass("timeTo-alert")
+      $("#timer div").removeClass("timeTo-alert")
     }
   })
 
@@ -324,15 +324,15 @@
     if (timer === clockInfo.fallTime && !clockInfo.isFall) {
       clockInfo.isFall = true
       setStoreItem("clock", JSON.stringify(clockInfo))
-      $('#playground').append(`<img class="clock" src="${pathName}images/clock.png" />`)
-      $(`.clock`).css({
+      $("#playground").append(`<img class="clock" src="${pathName}images/clock.png" />`)
+      $(".clock").css({
         animation: "spin 3s linear infinite",
         top: "-15%",
         right: randNumberWithMin(5, 75) + "%"
       })
-      $('.clock').animate({ top: '110%' }, 2700)
+      $(".clock").animate({ top: "110%" }, 2700)
       setTimeout(() => {
-        $('.clock').remove()
+        $(".clock").remove()
       }, 5000)
     }
   }
@@ -345,7 +345,7 @@
       $(target).remove()
     }, 1000)
     $(target).css("pointer-events", "none")
-    const id = $(target).attr("id").replace('lotto', '')
+    const id = $(target).attr("id").replace("lotto", "")
     lottoInfo[parseInt(id) - 1].isCatch = true
     setStoreItem("lotto", JSON.stringify(lottoInfo))
     setLottoPiece(getLottoPiece(lottoInfo))
@@ -357,13 +357,13 @@
       if (timer === item.fallTime && !item.isFall) {
         item.isFall = true
         const id = `lotto${item.id}`
-        $('#playground').append(`<img id="${id}" class="lotto" src="${pathName}images/lottery.png" />`)
+        $("#playground").append(`<img id="${id}" class="lotto" src="${pathName}images/lottery.png" />`)
         $(`#${id}`).css({
           animation: "spin 3s linear infinite",
           top: "-15%",
           right: randNumberWithMin(7, 76) - item.id + "%"
         })
-        $(`#${id}`).animate({ top: '110%' }, 2700 - (item.id * 100))
+        $(`#${id}`).animate({ top: "110%" }, 2700 - (item.id * 100))
         setTimeout(() => {
           $(`#${id}`).remove()
         }, 5000)

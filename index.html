@@ -41,18 +41,18 @@
   import { getTopRankHtml } from "./js/rank.js"
   import { setParticles, accordionEffect } from "./js/common.js"
   
-  $(window).on('pageshow', () => {
-    if (getStoreItem('process') != undefined) {
-      $("#start img").attr("src", 'images/continue.png');
+  $(window).on("pageshow", () => {
+    if (getStoreItem("process") != undefined) {
+      $("#start img").attr("src", "images/continue.png");
     }
   });
 
   $(async () => {
     setParticles("night")
 
-    if (getStoreItem('connect') !== 'true') {
+    if (getStoreItem("connect") !== "true") {
       Swal.fire({
-        html: "<div><img src='./images/loading.svg'><h2>請稍後</h2></div>",
+        html: `<div><img src="./images/loading.svg"><h2>請稍後</h2></div>`,
         allowOutsideClick: false,
         showConfirmButton:false
       })
@@ -61,7 +61,7 @@
         Swal.close()
       } else {
         Swal.fire({
-          icon: 'error',
+          icon: "error",
           title: "伺服器錯誤",
           html: "<h4>請稍後再試</h4>",
           allowOutsideClick: false,
@@ -71,27 +71,27 @@
     }
   })
 
-  $('#start img').click(() => {
-    let page = 'start'
+  $("#start img").click(() => {
+    let page = "start"
     if (getProcess() > 2) {
-      page = 'settle'
+      page = "settle"
     }
     window.location.href = `html/${page}.html`
   })
 
-  $('#ranking img').click(async () => { 
+  $("#ranking img").click(async () => { 
     Swal.fire({
-      imageUrl: './images/top-three.png',
+      imageUrl: "./images/top-three.png",
       imageWidth: 80,
       imageHeight: 80,
       allowOutsideClick: false,
       showCloseButton: true,
-      html: "<div id='data'><img src='./images/loading.svg'></div>",
-      confirmButtonText: '更多'
+      html: `<div id="data"><img src="./images/loading.svg"></div>`,
+      confirmButtonText: "更多"
     }).then((result) => {
       if (result.value)
       {
-        window.open('html/rank.html', '_blank')
+        window.open("html/rank.html", "_blank")
       }
     })
     const response = await getTopFivePlayers()
@@ -102,26 +102,26 @@
     })
   })
 
-  $('#instructions img').click(() => { 
+  $("#instructions img").click(() => { 
     Swal.fire({
-      imageUrl: './images/info.png',
+      imageUrl: "./images/info.png",
       imageWidth: 80,
       imageHeight: 80,
       allowOutsideClick: false,
-      html: `<div class='alert-instructions'>
-              <img src='./images/new-taiwan-dollar.png'>&nbsp;
+      html: `<div class="alert-instructions">
+              <img src="./images/new-taiwan-dollar.png">&nbsp;
               <span>抓取移動的鈔票&ensp;&ensp;</span>
             </div>
-            <div class='alert-instructions'>
-              <img src='./images/lottery.png'>&nbsp;
+            <div class="alert-instructions">
+              <img src="./images/lottery.png">&nbsp;
               <span>彩券會不定時落下</span>
             </div>
-            <div class='alert-instructions'>
-              <img src='./images/clock.png'>&nbsp;
+            <div class="alert-instructions">
+              <img src="./images/clock.png">&nbsp;
               <span>時間會不定時落下</span>
             </div>`
       ,
-      confirmButtonText: '確定'
+      confirmButtonText: "確定"
     })
   })
 </script>

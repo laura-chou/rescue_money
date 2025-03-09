@@ -1,7 +1,7 @@
 const getPathName = () => {
-  let path = '/'
-  if (window.location.pathname.includes('rescue_money')) {
-    path = '/rescue_money/'
+  let path = "/"
+  if (window.location.pathname.includes("rescue_money")) {
+    path = "/rescue_money/"
   }
   return path
 }
@@ -15,7 +15,7 @@ export const audioEffect = (src) => {
 }
 
 export const moneyFormat = (money) => {
-  return new Intl.NumberFormat('zh-TW').format(money)
+  return new Intl.NumberFormat("zh-TW").format(money)
 }
 
 export const randNumber = (max) => {
@@ -30,19 +30,19 @@ export const randNumberWithMin = (min, max) => {
 }
 
 export const setParticles = (effect) => {
-  particlesJS.load('particles-js', `${getPathName()}assets/${effect}-particles.json`);
+  particlesJS.load("particles-js", `${getPathName()}assets/${effect}-particles.json`);
 }
 
 export const accordionEffect = (element) => {
   element.classList.toggle("active");
-  let state = 'up'
-  const angleElement = element.querySelector('i.fa-solid');
+  let state = "up"
+  const angleElement = element.querySelector("i.fa-solid");
   const panel = element.nextElementSibling;
   if (panel.style.maxHeight) {
     panel.style.maxHeight = null;
   } else {
     panel.style.maxHeight = panel.scrollHeight + "px";
-    state = 'down'
+    state = "down"
   } 
   $(angleElement).attr("class", `fa-solid fa-angle-${state}`)
 }

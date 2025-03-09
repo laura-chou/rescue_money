@@ -45,7 +45,7 @@
     setParticles("coin")
   })
 
-  const initialDataTable = (emptyMsg = '暫無富豪') => {
+  const initialDataTable = (emptyMsg = "暫無富豪") => {
     $(".table").DataTable({
       searching: false,
       autoWidth: false,
@@ -55,8 +55,8 @@
       pageLength: 10,
       columnDefs: [
         {
-          targets: ['_all'],
-          className: 'mdc-data-table__cell'
+          targets: ["_all"],
+          className: "mdc-data-table__cell"
         }
       ],
       language: {
@@ -79,12 +79,12 @@
     const searchValue = $("#search").val()
     const searchData = players.filter(data => data.players.some(player => player.includes(searchValue)))
     $("#rank").html(getRankHtml(searchData))
-    initialDataTable('查無富豪')
+    initialDataTable("查無富豪")
   })
 
   $("#clear").click(() => {
-    if ($("#search").val() !== '') {
-      $("#search").val('')
+    if ($("#search").val() !== "") {
+      $("#search").val("")
       $("#rank").html(getRankHtml(players))
       initialDataTable()
     }

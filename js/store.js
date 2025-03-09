@@ -1,4 +1,4 @@
-import { randNumberWithMin } from './common.js'
+import { randNumberWithMin } from "./common.js"
 
 const domain = "https://game-api.up.railway.app"
 
@@ -78,7 +78,7 @@ export const getJackpot = () => {
     $.ajax({
       url: `${domain}/jackpot`,
       method: "GET",
-      dataType: 'json',
+      dataType: "json",
       success: function (response) {
         resolve(response)
       },
@@ -94,8 +94,8 @@ export const updateJackpot = (isWin) => {
     $.ajax({
       url: `${domain}/jackpot/update`,
       method: "PATCH",
-      dataType: 'json',
-      contentType: 'application/json',
+      dataType: "json",
+      contentType: "application/json",
       data: JSON.stringify({ win: isWin }),
       success: function (response) {
         resolve(response)
@@ -112,8 +112,8 @@ export const insertPlayer = (player, money) => {
     $.ajax({
       url: `${domain}/rescuemoney/add`,
       method: "POST",
-      dataType: 'json',
-      contentType: 'application/json',
+      dataType: "json",
+      contentType: "application/json",
       data: JSON.stringify({ player: player, money: money }),
       success: function (response) {
         resolve(response)
@@ -130,7 +130,7 @@ export const getAllPlayers = () => {
     $.ajax({
       url: `${domain}/rescuemoney`,
       method: "GET",
-      dataType: 'json',
+      dataType: "json",
       success: function (response) {
         resolve(response.data)
       },
@@ -146,7 +146,7 @@ export const getTopFivePlayers = () => {
     $.ajax({
       url: `${domain}/rescuemoney/top5`,
       method: "GET",
-      dataType: 'json',
+      dataType: "json",
       success: function (response) {
         resolve(response.data)
       },
@@ -158,13 +158,13 @@ export const getTopFivePlayers = () => {
 }
 
 export const connectServer = () => {
-  setStoreItem('connect', false)
+  setStoreItem("connect", false)
   return new Promise((resolve, reject) => {
     $.ajax({
       url: `${domain}`,
       method: "GET",
       success: function () {
-        setStoreItem('connect', true)
+        setStoreItem("connect", true)
         resolve(true)
       },
       error: function () {

@@ -34,7 +34,7 @@
   $(() => {
     const wallet = getStoreItem("wallet")
     if (wallet != null && wallet != "0") {
-      history.pushState(null, '', pathName)
+      history.pushState(null, "", pathName)
       setWalletMoney(wallet)
     } else {
       serverError()
@@ -45,7 +45,7 @@
     await Swal.fire({
       icon: "error",
       title: "伺服器錯誤",
-      html: "<h3 style='margin:0;'>請稍後再試</h3>",
+      html: `<h3 style="margin:0;">請稍後再試</h3>`,
       timer: 3000,
       showConfirmButton: false,
       allowOutsideClick: false,
@@ -56,19 +56,19 @@
     })
   }
 
-  $('#send').click(async () => { 
-    const name = $('#name').val()
-    if (name.trim() != '') {
+  $("#send").click(async () => { 
+    const name = $("#name").val()
+    if (name.trim() != "") {
       $("#send").addClass("disabled")
       const result = await insertPlayer(name, getStoreItem("wallet"))
-      if (Object.hasOwn(result, 'topFive')) {
+      if (Object.hasOwn(result, "topFive")) {
         if (result.topFive) {
           audioEffect("rich")
           Swal.fire({
-            html: `<img style='width:90px' src='${pathName}images/value.png'/>
-                    <h2 style='margin-bottom:0'>恭喜成為 5 大富豪之一</h2>`,
+            html: `<img style="width:90px" src="${pathName}images/value.png"/>
+                    <h2 style="margin-bottom:0">恭喜成為 5 大富豪之一</h2>`,
             allowOutsideClick: false,
-            confirmButtonText: '確定'
+            confirmButtonText: "確定"
           }).then(result => {
             settleCompleted()
           })
@@ -79,15 +79,15 @@
         serverError()
       }
     } else {
-      $('#name').addClass('error')
+      $("#name").addClass("error")
     }
   })
 
-  $('#name').on( "input", () => {
-    if ($('#name').val().trim() != '') {
-      $('#name').removeClass('error')
+  $("#name").on( "input", () => {
+    if ($("#name").val().trim() != "") {
+      $("#name").removeClass("error")
     } else {
-      $('#name').val('')
+      $("#name").val("")
     }
   })
 

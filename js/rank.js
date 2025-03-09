@@ -1,7 +1,7 @@
-import { moneyFormat } from './common.js'
+import { moneyFormat } from "./common.js"
 
 export const getRankHtml = (data) => {
-  return `<table class='table is-striped'>
+  return `<table class="table is-striped">
             <thead>
               <tr>
                 <th>排名</th>
@@ -14,8 +14,8 @@ export const getRankHtml = (data) => {
 }
 
 export const getTopRankHtml = (data) => {
-  const html = (data.length === 0) ? "<tr><td colspan='3'>暫無富豪</td></tr>" : getInfoHtml(data, true)
-  return `<table class='table'>
+  const html = (data.length === 0) ? `<tr><td colspan="3">暫無富豪</td></tr>` : getInfoHtml(data, true)
+  return `<table class="table">
             <thead>
               <tr>
                 <th>排名</th>
@@ -27,16 +27,16 @@ export const getTopRankHtml = (data) => {
 }
 
 const getInfoHtml = (data, isTopRank = false) => {
-  let info = ''
+  let info = ""
   if (data.length > 0) {
     for (const i of data) {
-      let moneyfield = ''
+      let moneyfield = ""
       if (!isTopRank) {
         moneyfield = `<td>$${moneyFormat(i.money)}</td>`
       }
-      info += `<tr class='${getClass(i.rank)}'>
+      info += `<tr class="${getClass(i.rank)}">
                 <td>${getRank(i.rank)}</td>
-                <td style='position:relative;'>
+                <td style="position:relative;">
                   <span>${i.players[0]}</span>
                   ${getMorePlayers(i.players.slice(1))}
                 </td>
@@ -52,15 +52,15 @@ const getMorePlayers = (players) => {
     return `<button class="accordion">
               <i class="fa-solid fa-angle-up"></i>
             </button>
-            <div class='more'>${players.join('<br/>')}</div>`
+            <div class="more">${players.join("<br/>")}</div>`
   }
-  return ''
+  return ""
 }
 
 const getRank = (rank) => {
-  return rank == 1 ? "<i class='fas fa-medal medal'></i>" : rank;
+  return rank == 1 ? `<i class="fas fa-medal medal"></i>` : rank;
 }
 
 const getClass = (rank) => {
-  return rank == 1 ? "top1" : '';
+  return rank == 1 ? "top1" : "";
 }

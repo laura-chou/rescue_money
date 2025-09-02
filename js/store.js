@@ -1,6 +1,8 @@
 import { randNumberWithMin } from "./common.js"
 
 const domain = "https://game-api.up.railway.app"
+const rescueMoneyUrl = `${domain}/rescue-money`
+const jackpotUrl = `${domain}/jackpot`
 
 export const getTimer = () => {
   let time = getStoreItem("time");
@@ -76,7 +78,7 @@ export const removeStorage = (process) => {
 export const getJackpot = () => {
   return new Promise((resolve, reject) => {
     $.ajax({
-      url: `${domain}/jackpot`,
+      url: jackpotUrl,
       method: "GET",
       dataType: "json",
       success: function (response) {
@@ -92,7 +94,7 @@ export const getJackpot = () => {
 export const updateJackpot = (isWin) => {
   return new Promise((resolve, reject) => {
     $.ajax({
-      url: `${domain}/jackpot/update`,
+      url: `${jackpotUrl}/update`,
       method: "PATCH",
       dataType: "json",
       contentType: "application/json",
@@ -110,7 +112,7 @@ export const updateJackpot = (isWin) => {
 export const insertPlayer = (player, money) => {
   return new Promise((resolve, reject) => {
     $.ajax({
-      url: `${domain}/rescuemoney/add`,
+      url: `${rescueMoneyUrl}/create`,
       method: "POST",
       dataType: "json",
       contentType: "application/json",
@@ -128,7 +130,7 @@ export const insertPlayer = (player, money) => {
 export const getAllPlayers = () => {
   return new Promise((resolve, reject) => {
     $.ajax({
-      url: `${domain}/rescuemoney`,
+      url: rescueMoneyUrl,
       method: "GET",
       dataType: "json",
       success: function (response) {
@@ -144,7 +146,7 @@ export const getAllPlayers = () => {
 export const getTopFivePlayers = () => {
   return new Promise((resolve, reject) => {
     $.ajax({
-      url: `${domain}/rescuemoney/top5`,
+      url: `${rescueMoneyUrl}/top5`,
       method: "GET",
       dataType: "json",
       success: function (response) {

@@ -43,9 +43,9 @@
   
   $(window).on("pageshow", () => {
     if (getStoreItem("process") != undefined) {
-      $("#start img").attr("src", "images/continue.png");
+      $("#start img").attr("src", "images/continue.png")
     }
-  });
+  })
 
   $(async () => {
     setParticles("night")
@@ -61,8 +61,8 @@
         Swal.close()
       } else {
         Swal.fire({
-          icon: "error",
-          title: "伺服器錯誤",
+          icon: "warning",
+          title: "伺服器維護中",
           html: "<h4>請稍後再試</h4>",
           allowOutsideClick: false,
           showConfirmButton:false
@@ -89,8 +89,7 @@
       html: `<div id="data"><img src="./images/loading.svg"></div>`,
       confirmButtonText: "更多"
     }).then((result) => {
-      if (result.value)
-      {
+      if (result.value) {
         window.open("html/rank.html", "_blank")
       }
     })

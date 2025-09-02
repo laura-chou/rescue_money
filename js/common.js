@@ -1,3 +1,5 @@
+import { removeStorage } from "./store.js"
+
 const getPathName = () => {
   let path = "/"
   if (window.location.pathname.includes("rescue_money")) {
@@ -46,3 +48,23 @@ export const accordionEffect = (element) => {
   } 
   $(angleElement).attr("class", `fa-solid fa-angle-${state}`)
 }
+
+export const redirectToHome  = () => {
+  removeStorage();
+  window.location.href = pathName;
+};
+
+export const serverError = async () => {
+  await Swal.fire({
+    icon: "error",
+    title: "伺服器錯誤",
+    html: `<h3 style="margin:0;">請稍後再試</h3>`,
+    timer: 3000,
+    showConfirmButton: false,
+    allowOutsideClick: false,
+    willClose: () => {
+      removeStorage();
+      window.location.href = pathName;
+    }
+  });
+};

@@ -37,28 +37,28 @@
 <script src="./js/bootstrap.bundle.min.js"></script>
 <script src="./js/fontawesome.min.js"></script>
 <script type="module">
-  import { connectServer, getStoreItem, getProcess, getTopFivePlayers } from "./js/store.js"
-  import { getTopRankHtml } from "./js/rank.js"
-  import { setParticles, accordionEffect } from "./js/common.js"
+  import { connectServer, getStoreItem, getProcess, getTopFivePlayers } from "./js/store.js";
+  import { getTopRankHtml } from "./js/rank.js";
+  import { setParticles, accordionEffect, serverError } from "./js/common.js";
   
   $(window).on("pageshow", () => {
     if (getStoreItem("process") != undefined) {
-      $("#start img").attr("src", "images/continue.png")
+      $("#start img").attr("src", "images/continue.png");
     }
-  })
+  });
 
   $(async () => {
-    setParticles("night")
+    setParticles("night");
 
     if (getStoreItem("connect") !== "true") {
       Swal.fire({
         html: `<div><img src="./images/loading.svg"><h2>請稍後</h2></div>`,
         allowOutsideClick: false,
         showConfirmButton:false
-      })
-      const isConnect = await connectServer()
+      });
+      const isConnect = await connectServer();
       if (isConnect) {
-        Swal.close()
+        Swal.close();
       } else {
         Swal.fire({
           icon: "warning",
@@ -66,18 +66,18 @@
           html: "<h4>請稍後再試</h4>",
           allowOutsideClick: false,
           showConfirmButton:false
-        })
+        });
       }
     }
-  })
+  });
 
   $("#start img").click(() => {
-    let page = "start"
+    let page = "start";
     if (getProcess() > 2) {
-      page = "settle"
+      page = "settle";
     }
-    window.location.href = `html/${page}.html`
-  })
+    window.location.href = `html/${page}.html`;
+  });
 
   $("#ranking img").click(async () => { 
     Swal.fire({
@@ -90,16 +90,20 @@
       confirmButtonText: "更多"
     }).then((result) => {
       if (result.value) {
-        window.open("html/rank.html", "_blank")
+        window.open("html/rank.html", "_blank");
       }
-    })
-    const response = await getTopFivePlayers()
-    $("#data").html(getTopRankHtml(response))
+    });
+    const response = await getTopFivePlayers();
+    if (response) { 
+      $("#data").html(getTopRankHtml(response));
+    } else {
+      serverError(false);
+    }
 
     $("#data").on("click", ".accordion", event => {
-      accordionEffect(event.currentTarget)
-    })
-  })
+      accordionEffect(event.currentTarget);
+    });
+  });
 
   $("#instructions img").click(() => { 
     Swal.fire({
@@ -122,6 +126,6 @@
       ,
       confirmButtonText: "確定"
     })
-  })
+  });
 </script>
 </html>

@@ -1,4 +1,4 @@
-import { moneyFormat } from "./common.js"
+import { moneyFormat } from "./common.js";
 
 export const getRankHtml = (data) => {
   return `<table class="table is-striped">
@@ -10,8 +10,8 @@ export const getRankHtml = (data) => {
               </tr>
             </thead>
             <tbody>${getInfoHtml(data)}</tbody>
-          </table>`
-}
+          </table>`;
+};
 
 export const getTopRankHtml = (data) => {
   const html = (data.length === 0) ? `<tr><td colspan="3">暫無富豪</td></tr>` : getInfoHtml(data, true)
@@ -23,16 +23,16 @@ export const getTopRankHtml = (data) => {
               </tr>
             </thead>
             <tbody>${html}</tbody>
-          </table>`
-}
+          </table>`;
+};
 
 const getInfoHtml = (data, isTopRank = false) => {
-  let info = ""
+  let info = "";
   if (data.length > 0) {
     for (const i of data) {
-      let moneyfield = ""
+      let moneyfield = "";
       if (!isTopRank) {
-        moneyfield = `<td>$${moneyFormat(i.money)}</td>`
+        moneyfield = `<td>$${moneyFormat(i.money)}</td>`;
       }
       info += `<tr class="${getClass(i.rank)}">
                 <td>${getRank(i.rank)}</td>
@@ -41,26 +41,25 @@ const getInfoHtml = (data, isTopRank = false) => {
                   ${getMorePlayers(i.players.slice(1))}
                 </td>
                 ${moneyfield}
-              </tr>`
+              </tr>`;
     }
   }
-  return info
-}
-
+  return info;
+};
 const getMorePlayers = (players) => {
   if (players.length > 0) {
     return `<button class="accordion">
               <i class="fa-solid fa-angle-up"></i>
             </button>
-            <div class="more">${players.join("<br/>")}</div>`
+            <div class="more">${players.join("<br/>")}</div>`;
   }
-  return ""
-}
+  return "";
+};
 
 const getRank = (rank) => {
   return rank == 1 ? `<i class="fas fa-medal medal"></i>` : rank;
-}
+};
 
 const getClass = (rank) => {
   return rank == 1 ? "top1" : "";
-}
+};

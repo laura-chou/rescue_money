@@ -27,53 +27,53 @@
 <script src="../js/jquery-3.7.1.min.js"></script>
 <script src="../js/sweetalert2@11.js"></script>
 <script type="module">
-  import { getStoreItem, insertPlayer, removeStorage } from "../js/store.js"
-  import { pathName, audioEffect, redirectToHome, serverError } from "../js/common.js"
+  import { getStoreItem, insertPlayer, removeStorage } from "../js/store.js";
+  import { pathName, audioEffect, redirectToHome, serverError } from "../js/common.js";
   import { setWalletMoney } from "../js/start.js"
 
   $(() => {
-    const wallet = getStoreItem("wallet")
+    const wallet = getStoreItem("wallet");
     if (wallet != null && wallet != "0") {
-      history.pushState(null, "", pathName)
-      setWalletMoney(wallet)
+      history.pushState(null, "", pathName);
+      setWalletMoney(wallet);
     } else {
-      serverError()
+      serverError();
     }
-  })
+  });
 
   $("#send").click(async () => { 
-    const name = $("#name").val()
+    const name = $("#name").val();
     if (name.trim() != "") {
-      $("#send").addClass("disabled")
-      const result = await insertPlayer(name, getStoreItem("wallet"))
+      $("#send").addClass("disabled");
+      const result = await insertPlayer(name, getStoreItem("wallet"));
       if (result) {
         if (result?.data?.topFive) {
-          audioEffect("rich")
+          audioEffect("rich");
           Swal.fire({
             html: `<img style="width:90px" src="${pathName}images/value.png"/>
                     <h2 style="margin-bottom:0">恭喜成為 5 大富豪之一</h2>`,
             allowOutsideClick: false,
             confirmButtonText: "確定"
           }).then(result => {
-            redirectToHome()
-          })
+            redirectToHome();
+          });
         } else {
-          redirectToHome()
+          redirectToHome();
         }
       } else {
-        serverError()
+        serverError();
       }
     } else {
-      $("#name").addClass("error")
+      $("#name").addClass("error");
     }
-  })
+  });
 
-  $("#name").on( "input", () => {
+  $("#name").on("input", () => {
     if ($("#name").val().trim() != "") {
-      $("#name").removeClass("error")
+      $("#name").removeClass("error");
     } else {
-      $("#name").val("")
+      $("#name").val("");
     }
-  })
+  });
 </script>
 </html>

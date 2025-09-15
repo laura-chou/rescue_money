@@ -1,8 +1,8 @@
-import { randNumberWithMin } from "./common.js"
+import { randNumberWithMin } from "./common.js";
 
-const domain = "https://game-api.up.railway.app"
-const rescueMoneyUrl = `${domain}/rescue-money`
-const jackpotUrl = `${domain}/jackpot`
+const domain = "https://game-api.up.railway.app";
+const rescueMoneyUrl = `${domain}/rescue-money`;
+const jackpotUrl = `${domain}/jackpot`;
 
 export const getTimer = () => {
   let time = getStoreItem("time");
@@ -10,7 +10,7 @@ export const getTimer = () => {
     return parseInt(time);
   }
   return 30;
-}
+};
 
 export const getWalletMoney = () => {
   let money = getStoreItem("wallet");
@@ -18,62 +18,63 @@ export const getWalletMoney = () => {
     return parseInt(money);
   }
   return 0;
-}
+};
 
 export const getClockInfo = () => {
   let info = getStoreItem("clock");
   if (info != undefined) {
     return JSON.parse(info);
   }
-  const defaultInfo = { fallTime: randNumberWithMin(10, getTimer()-1), isCatch: false, isFall: false }
-  setStoreItem("clock", JSON.stringify(defaultInfo))
+  const defaultInfo = { fallTime: randNumberWithMin(10, getTimer()-1), isCatch: false, isFall: false };
+  setStoreItem("clock", JSON.stringify(defaultInfo));
   return defaultInfo;
-}
+};
 
 export const getLottoInfo = () => {
   let info = getStoreItem("lotto");
   if (info != undefined) {
     return JSON.parse(info);
   }
-  const defaultInfo = [{ id: 1, fallTime: randNumberWithMin(10, getTimer()-1), isCatch: false, isFall: false, isChoose: false }]
-  setStoreItem("lotto", JSON.stringify(defaultInfo))
+  const defaultInfo = [{ id: 1, fallTime: randNumberWithMin(10, getTimer()-1), isCatch: false, isFall: false, isChoose: false }];
+  setStoreItem("lotto", JSON.stringify(defaultInfo));
   return defaultInfo;
-}
+};
 
 export const getProcess = () => {
   let process = getStoreItem("process");
   if (process != undefined) {
     return parseInt(process);
   }
-  process = 1
-  setStoreItem("process", process)
+  process = 1;
+  setStoreItem("process", process);
   return process;
-}
+};
 
 export const setStoreItem = (key, value) => {
-  sessionStorage.setItem(key, value)
-}
+  sessionStorage.setItem(key, value);
+};
 
 export const getStoreItem = (key) => {
-  return sessionStorage.getItem(key)
-}
+  return sessionStorage.getItem(key);
+};
 
 export const removeStorage = (process) => {
   switch (process) {
     case 2:
-      sessionStorage.removeItem("time")
-      sessionStorage.removeItem("lotto")
-      sessionStorage.removeItem("clock")
-      break
+      sessionStorage.removeItem("time");
+      sessionStorage.removeItem("lotto");
+      sessionStorage.removeItem("clock");
+      break;
     default:
-      sessionStorage.removeItem("process")
-      sessionStorage.removeItem("time")
-      sessionStorage.removeItem("lotto")
-      sessionStorage.removeItem("clock")
-      sessionStorage.removeItem("wallet")
-      break
+      sessionStorage.removeItem("process");
+      sessionStorage.removeItem("time");
+      sessionStorage.removeItem("lotto");
+      sessionStorage.removeItem("clock");
+      sessionStorage.removeItem("wallet");
+      sessionStorage.removeItem("connect");
+      break;
   }
-}
+};
 
 export const getJackpot = () => {
   return new Promise((resolve, reject) => {
@@ -82,14 +83,14 @@ export const getJackpot = () => {
       method: "GET",
       dataType: "json",
       success: function (response) {
-        resolve(response)
+        resolve(response);
       },
       error: function (xhr, ajaxOptions, thrownError) {
-        resolve(0)
+        resolve(0);
       }
-    })
-  })
-}
+    });
+  });
+};
 
 export const updateJackpot = (isWin) => {
   return new Promise((resolve, reject) => {
@@ -100,14 +101,14 @@ export const updateJackpot = (isWin) => {
       contentType: "application/json",
       data: JSON.stringify({ win: isWin }),
       success: function (response) {
-        resolve(response)
+        resolve(response);
       },
       error: function (xhr, ajaxOptions, thrownError) {
-        resolve(0)
+        resolve(0);
       }
-    })
-  })
-}
+    });
+  });
+};
 
 export const insertPlayer = (player, money) => {
   return new Promise((resolve, reject) => {
@@ -118,14 +119,14 @@ export const insertPlayer = (player, money) => {
       contentType: "application/json",
       data: JSON.stringify({ player: player, money: money }),
       success: function (response) {
-        resolve(response)
+        resolve(response);
       },
       error: function (xhr, ajaxOptions, thrownError) {
-        resolve(null)
+        resolve(null);
       }
-    })
-  })
-}
+    });
+  });
+};
 
 export const getAllPlayers = () => {
   return new Promise((resolve, reject) => {
@@ -134,14 +135,14 @@ export const getAllPlayers = () => {
       method: "GET",
       dataType: "json",
       success: function (response) {
-        resolve(response.data)
+        resolve(response.data);
       },
       error: function (xhr, ajaxOptions, thrownError) {
-        resolve([])
+        resolve(null)
       }
-    })
-  })
-}
+    });
+  });
+};
 
 export const getTopFivePlayers = () => {
   return new Promise((resolve, reject) => {
@@ -150,28 +151,28 @@ export const getTopFivePlayers = () => {
       method: "GET",
       dataType: "json",
       success: function (response) {
-        resolve(response.data)
+        resolve(response.data);
       },
       error: function (xhr, ajaxOptions, thrownError) {
-        resolve([])
+        resolve(null);
       }
-    })
-  })
-}
+    });
+  });
+};
 
 export const connectServer = () => {
-  setStoreItem("connect", false)
+  setStoreItem("connect", false);
   return new Promise((resolve, reject) => {
     $.ajax({
-      url: `${domain}`,
+      url: domain,
       method: "GET",
       success: function () {
         setStoreItem("connect", true)
-        resolve(true)
+        resolve(true);
       },
       error: function () {
-        resolve(false)
+        resolve(false);
       }
-    })
-  })
-}
+    });
+  });
+};

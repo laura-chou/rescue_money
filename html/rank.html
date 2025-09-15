@@ -33,11 +33,12 @@
 </body>
 <script src="../js/particles.min.js"></script>
 <script src="../js/jquery-3.7.1.min.js"></script>
+<script src="../js/sweetalert2@11.js"></script>
 <script src="../js/fontawesome.min.js"></script>
 <script src="../js/dataTables.js"></script>
 <script src="../js/dataTables.bulma.js"></script>
 <script type="module">
-  import { setParticles, accordionEffect } from "../js/common.js"
+  import { setParticles, accordionEffect, serverError } from "../js/common.js"
   import { getRankHtml } from "../js/rank.js"
   import { getAllPlayers } from "../js/store.js"
 
@@ -72,8 +73,13 @@
   }
 
   const players = await getAllPlayers()
-  $("#rank").html(getRankHtml(players))
-  initialDataTable()
+  if (players) {
+    $("#rank").html(getRankHtml(players))
+    initialDataTable()
+  } else {
+    serverError(false);
+  }
+
 
   $("#search").on("change", () => {
     const searchValue = $("#search").val()

@@ -33,49 +33,49 @@
 <script src="../js/bignumber.min.js"></script>
 <script type="module">
   import { getTimer, getWalletMoney, getClockInfo, getLottoInfo, getProcess, 
-    setStoreItem, getJackpot, updateJackpot, removeStorage } from "../js/store.js"
+    setStoreItem, getJackpot, updateJackpot, removeStorage } from "../js/store.js";
   import { pathName, audioEffect, randNumber, randNumberWithMin, setParticles,
-    moneyFormat, redirectToHome, serverError } from "../js/common.js"
+    moneyFormat, redirectToHome, serverError } from "../js/common.js";
   import { getLottoPiece, getLottoChance, getJockpotHtml, setWalletMoney, setLottoPiece, 
-    numberFormat, isBigIntType } from "../js/start.js"
+    numberFormat, isBigIntType } from "../js/start.js";
 
-  let timer = getTimer()
-  const process = getProcess()
-  let moneyId = 0
-  let walletMoney = getWalletMoney()
+  let timer = getTimer();
+  const process = getProcess();
+  let moneyId = 0;
+  let walletMoney = getWalletMoney();
   const moneyData = [
     { image: "one-hundred", score: 100 },
     { image: "five-hundred", score: 500 },
     { image: "one-thousand", score: 1000 }
-  ]
-  let clockInfo = getClockInfo()
-  let lottoInfo = getLottoInfo()
+  ];
+  let clockInfo = getClockInfo();
+  let lottoInfo = getLottoInfo();
 
   const initSetUp = () => {
-    setStoreItem("time", timer)
-    setParticles("cloud")
-    setLottoPiece(getLottoPiece(lottoInfo))
-    setWalletMoney(walletMoney)
-  }
+    setStoreItem("time", timer);
+    setParticles("cloud");
+    setLottoPiece(getLottoPiece(lottoInfo));
+    setWalletMoney(walletMoney);
+  };
 
   $(window).on("pageshow", () => {
     if (getProcess() > 2) {
-      removeStorage(2)
-      window.location.href = pathName
-      return
+      removeStorage(2);
+      window.location.href = pathName;
+      return;
     }
-  })
+  });
 
   $(() => {
-    history.replaceState(null, "", pathName)
-    initSetUp ()
-    setTimer(timer)
-  })
+    history.replaceState(null, "", pathName);
+    initSetUp ();
+    setTimer(timer);
+  });
 
   const move = (moneyId) => {
-    let elementCss = $(`#money${moneyId}`).css("right")
+    let elementCss = $(`#money${moneyId}`).css("right");
     if(elementCss != undefined) {
-      elementCss = elementCss.replace("px", "")
+      elementCss = elementCss.replace("px", "");
     }
     const moveAnimate = [
       {
@@ -86,17 +86,17 @@
         top: "-20%",
         left: `${parseInt(elementCss) - 5}px`
       }
-    ]
+    ];
 
     $(`#money${moneyId}`).animate(
       moveAnimate[randNumber(moveAnimate.length) - 1],
       randNumberWithMin(1500, 2500),
       () => {
-        move(moneyId)
+        move(moneyId);
       }
-    )
-  }
-  
+    );
+  };
+
   const setTimer = (time, isStart = true) => {
     $("#timer").timeTo({
         seconds: time,
@@ -104,11 +104,11 @@
         displayMinutes: false,
         fontSize: 60,
         start: isStart
-    })
-  }
+    });
+  };
 
   const lottoAlert = async () => {
-    let bonus = await getJackpot()
+    let bonus = await getJackpot();
     if (bonus != 0) {
       for (const lotto of getLottoChance(lottoInfo)) {
         if (walletMoney != 0 && walletMoney >= 1000) {
@@ -128,13 +128,13 @@
             showCancelButton: true,
             confirmButtonText: "買",
             cancelButtonText: "不買"
-          })
+          });
           if (result.value) {
-            walletMoney -= isBigIntType(walletMoney) ? BigInt(1000) : 1000
-            lottoInfo[lotto.id-1].isChoose = true
-            setStoreItem("lotto", JSON.stringify(lottoInfo))
-            setLottoPiece(getLottoPiece(lottoInfo))
-            setWalletMoney(walletMoney)
+            walletMoney -= isBigIntType(walletMoney) ? BigInt(1000) : 1000;
+            lottoInfo[lotto.id-1].isChoose = true;
+            setStoreItem("lotto", JSON.stringify(lottoInfo));
+            setLottoPiece(getLottoPiece(lottoInfo));
+            setWalletMoney(walletMoney);
             const { value: selectNumber } = await Swal.fire({
               title: "選一個號碼",
               input: "radio",
@@ -150,122 +150,122 @@
               },
               inputValidator: (value) => {
                 if (!value) {
-                  return "你還沒選號碼!"
+                  return "你還沒選號碼!";
                 }
               }
-            })
-            const winNumber = randNumber(6)
-            audioEffect("bonus")
+            });
+            const winNumber = randNumber(6);
+            audioEffect("bonus");
             await Swal.fire({
               showConfirmButton: false,
               allowOutsideClick: false,
               title: "開獎號碼",
               timer: 2000,
               html: `<img class="win-number" src="${pathName}images/number-${winNumber}.png"/>`
-            })
+            });
             if (selectNumber == winNumber) {
-              audioEffect("applause")
-              setParticles("money")
-              $("#particles-js").css({ animation: "fadeOut2 5s linear" })
+              audioEffect("applause");
+              setParticles("money");
+              $("#particles-js").css({ animation: "fadeOut2 5s linear" });
               setTimeout(() => {
-                setParticles("cloud")
-              }, 5000)
-              walletMoney = BigInt(walletMoney) + numberFormat(bonus)
-              setWalletMoney(walletMoney)
+                setParticles("cloud");
+              }, 5000);
+              walletMoney = BigInt(walletMoney) + numberFormat(bonus);
+              setWalletMoney(walletMoney);
               await Swal.fire({
                 html: getJockpotHtml(bonus),
                 confirmButtonText: "確定",
                 showConfirmButton: true,
                 allowOutsideClick: false
-              })
-              bonus = await updateJackpot(true)
+              });
+              bonus = await updateJackpot(true);
             } else {
-              audioEffect("disappoint")
-              bonus = await updateJackpot(false)
+              audioEffect("disappoint");
+              bonus = await updateJackpot(false);
               await Swal.fire({
                 html: `<img style="width:90px" src="${pathName}images/lose-money.png"/>
                         <h1 style="margin-bottom:0">銘謝惠顧</h1>`,
                 timer: 2000,
                 showConfirmButton: false,
                 allowOutsideClick: false
-              })
+              });
             }
           } else {
-            lottoInfo[lotto.id-1].isChoose = true
-            setStoreItem("lotto", JSON.stringify(lottoInfo))
-            setLottoPiece(getLottoPiece(lottoInfo))
+            lottoInfo[lotto.id-1].isChoose = true;
+            setStoreItem("lotto", JSON.stringify(lottoInfo));
+            setLottoPiece(getLottoPiece(lottoInfo));
           }
         }
       }
-      setStoreItem("process", 3)
-      removeStorage(2)
-      window.location.href = `${pathName}html/settle.html`
+      setStoreItem("process", 3);
+      removeStorage(2);
+      window.location.href = `${pathName}html/settle.html`;
     } else {
-      serverError()
+      serverError();
     }
-  }
+  };
 
   if (process === 2) {
-    setTimer(0, false)
-    $("#timer").text("00").addClass("time-stop")
-    await lottoAlert()
+    setTimer(0, false);
+    $("#timer").text("00").addClass("time-stop");
+    await lottoAlert();
   }
 
   const gameInterval = setInterval(async () => {
     if (timer > 0) {
-      timer--
-      setStoreItem("time", timer)
+      timer--;
+      setStoreItem("time", timer);
 
       for (let n = 0; n < randNumber(3); n++) {
-        const index = randNumberWithMin(0, moneyData.length-1)
-        const image = moneyData[index].image
-        $("#playground").append(`<img src="${pathName}images/${image}.gif" id="money${moneyId}" class="money" name="${image}">`)
+        const index = randNumberWithMin(0, moneyData.length-1);
+        const image = moneyData[index].image;
+        $("#playground").append(`<img src="${pathName}images/${image}.gif" id="money${moneyId}" class="money" name="${image}">`);
         $(`#money${moneyId}`).css({
           bottom: "0%",
           right: `${randNumber(80)}%`,
-        })
-        move(moneyId)
-        moneyId++
+        });
+        move(moneyId);
+        moneyId++;
       }
       
-      fallClock()
-      fallLotto()
+      fallClock();
+      fallLotto();
     } else {
       if (walletMoney === 0) {
-        redirectToHome()
-        return
+        redirectToHome();
+        return;
       }
-      pause()
-      setStoreItem("process", 2)
-      await lottoAlert()
+      pause();
+      setStoreItem("process", 2);
+      await lottoAlert();
     }
-  }, 1000)
+  }, 1000);
 
   $("#pause").click(() => { 
-    pause()
-    window.location.href = pathName
+    pause();
+    window.location.href = pathName;
   })
   
   $("#playground").on("click", ".money", event => {
-    const target = event.currentTarget
-    $(target).css("pointer-events", "none")
-    audioEffect("money")
-    $(target).css({ animation: "fadeOut .5s linear" })
+    const target = event.currentTarget;
+    $(target).css("pointer-events", "none");
+    audioEffect("money");
+    $(target).css({ animation: "fadeOut .5s linear" });
     setTimeout(() => {
-      $(target).remove()
-    },500)
-    walletMoney += moneyData.find(data => data.image === target.name).score
-    setWalletMoney(walletMoney)
-  })
+      $(target).remove();
+    },500);
+    walletMoney += moneyData.find(data => data.image === target.name).score;
+    setWalletMoney(walletMoney);
+  });
 
   const pause = () => {
-    clearInterval(gameInterval)
-    $("#playground").find(".money").remove()
-  }
+    clearInterval(gameInterval);
+    $("#playground").find(".money").remove();
+  };
 
   const getLottoFallTime = () => {
     while (lottoInfo.length < 2) {
-      let randomNumber = randNumberWithMin(10,timer)
+      let randomNumber = randNumberWithMin(10,timer);
       if (!lottoInfo.some(lotto => lotto.fallTime == randomNumber)) {
         lottoInfo.push({
           id: 2,
@@ -273,83 +273,83 @@
           isCatch: false,
           isFall: false,
           isChoose: false
-        })
+        });
       }
     }
-    setStoreItem("lotto", JSON.stringify(lottoInfo))
-  }
+    setStoreItem("lotto", JSON.stringify(lottoInfo));
+  };
 
   $("#playground").on("click", ".clock", event => {
-    const target = event.currentTarget
-    $(target).stop()
-    $(target).attr("src", `${pathName}images/plus-time.png`)
-    $(target).css({ animation: "enlarge2 1s linear, fadeOut2 1s linear" })
+    const target = event.currentTarget;
+    $(target).stop();
+    $(target).attr("src", `${pathName}images/plus-time.png`);
+    $(target).css({ animation: "enlarge2 1s linear, fadeOut2 1s linear" });
     setTimeout(() => {
       $(target).remove()
-    }, 1000)
-    $(target).css("pointer-events", "none")
-    clockInfo.isCatch = true
-    getLottoFallTime()
-    audioEffect("lotto")
-    timer += 10
-    setStoreItem("time", timer)
-    setStoreItem("clock", JSON.stringify(clockInfo))
-    $("#timer").timeTo("reset")
+    }, 1000);
+    $(target).css("pointer-events", "none");
+    clockInfo.isCatch = true;
+    getLottoFallTime();
+    audioEffect("lotto");
+    timer += 10;
+    setStoreItem("time", timer);
+    setStoreItem("clock", JSON.stringify(clockInfo));
+    $("#timer").timeTo("reset");
     setTimer(timer)
     if (timer > 10) {
-      $("#timer div").removeClass("timeTo-alert")
+      $("#timer div").removeClass("timeTo-alert");
     }
-  })
+  });
 
   const fallClock = () => {
     if (timer === clockInfo.fallTime && !clockInfo.isFall) {
-      clockInfo.isFall = true
-      setStoreItem("clock", JSON.stringify(clockInfo))
-      $("#playground").append(`<img class="clock" src="${pathName}images/clock.png" />`)
+      clockInfo.isFall = true;
+      setStoreItem("clock", JSON.stringify(clockInfo));
+      $("#playground").append(`<img class="clock" src="${pathName}images/clock.png" />`);
       $(".clock").css({
         animation: "spin 3s linear infinite",
         top: "-15%",
         right: randNumberWithMin(5, 75) + "%"
-      })
-      $(".clock").animate({ top: "110%" }, 2700)
+      });
+      $(".clock").animate({ top: "110%" }, 2700);
       setTimeout(() => {
-        $(".clock").remove()
-      }, 5000)
+        $(".clock").remove();
+      }, 5000);
     }
-  }
+  };
 
   $("#playground").on("click", ".lotto", event => {
-    const target = event.currentTarget
-    $(target).stop()
-    $(target).css({ animation: "enlarge 1s linear, fadeOut2 1s linear" })
+    const target = event.currentTarget;
+    $(target).stop();
+    $(target).css({ animation: "enlarge 1s linear, fadeOut2 1s linear" });
     setTimeout(() => {
-      $(target).remove()
-    }, 1000)
-    $(target).css("pointer-events", "none")
-    const id = $(target).attr("id").replace("lotto", "")
-    lottoInfo[parseInt(id) - 1].isCatch = true
-    setStoreItem("lotto", JSON.stringify(lottoInfo))
-    setLottoPiece(getLottoPiece(lottoInfo))
-    audioEffect("lotto")
-  })
+      $(target).remove();
+    }, 1000);
+    $(target).css("pointer-events", "none");
+    const id = $(target).attr("id").replace("lotto", "");
+    lottoInfo[parseInt(id) - 1].isCatch = true;
+    setStoreItem("lotto", JSON.stringify(lottoInfo));
+    setLottoPiece(getLottoPiece(lottoInfo));
+    audioEffect("lotto");
+  });
 
   const fallLotto = () => {
     for (const item of lottoInfo) {
       if (timer === item.fallTime && !item.isFall) {
-        item.isFall = true
-        const id = `lotto${item.id}`
-        $("#playground").append(`<img id="${id}" class="lotto" src="${pathName}images/lottery.png" />`)
+        item.isFall = true;
+        const id = `lotto${item.id}`;
+        $("#playground").append(`<img id="${id}" class="lotto" src="${pathName}images/lottery.png" />`);
         $(`#${id}`).css({
           animation: "spin 3s linear infinite",
           top: "-15%",
           right: randNumberWithMin(7, 76) - item.id + "%"
-        })
-        $(`#${id}`).animate({ top: "110%" }, 2700 - (item.id * 100))
+        });
+        $(`#${id}`).animate({ top: "110%" }, 2700 - (item.id * 100));
         setTimeout(() => {
-          $(`#${id}`).remove()
-        }, 5000)
+          $(`#${id}`).remove();
+        }, 5000);
       }
     }
-  }
+  };
 </script>
 </html>
